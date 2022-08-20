@@ -1,0 +1,3245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>test</title>
+</head>
+<body>
+    <script>
+
+        /*[86]素数之积：素数又称质数
+        RSA 加密算法在网络安全世界中无处不在，它利用了极大整数因数分解的困难度，数据越大，安全系数越高，
+        给定一个32位正整数，请对其进行因数分解，找出是哪两个素数的乘积。
+        输入描述：一个正整数num; 0< num <=2147483647
+        输出描述：如果成功找到，以单个空格分割，从小到大输出两个素数，分解失败，请输出﹣1 -1
+        示例1:
+            输入15
+            输出3 5
+            说明因数分解后，找到两个素数3和5，使得3*5=15，按从小到大排列后，输出3 5
+        示例2:
+            输入27
+            输出－1 -1
+            说明通过因数分解，找不到任何素数，使得他们的乘积为27，输出﹣1-1
+        */
+       primeNumber('15');
+       primeNumber('27');
+       function primeNumber(input) {
+            //let n = Number(readLine());
+            let n = Number(input);
+            let list = [];
+            let m = 0;
+           /**
+            * 本题就是求出一个数只有两个因子（1不是素数）
+            * 遍历n求出它所有的因子
+            */
+           while (m != n) {   //当n==m时说明已经不能再除了，跳出循环
+               n = m != 0 ? m : n;
+               for (let i = 2; i < Math.sqrt(n) + 1; i++) {
+                   if (n % i == 0) {
+                       m = n / i;    //把商作为下次的被除数
+                       list.push(i);    //i就是因子
+                       break;
+                   }
+               }
+           }
+           list.push(m);
+           if (list.length == 2) {
+               console.log(list[0] + " " + list[1]);
+           } else {
+               console.log("-1 -1");
+           }
+       }
+    
+    
+   
+    /*最大嵌套括号深度
+    题目描述
+    现有一字符串仅由 ‘(‘，’)’，'{‘，’}’，'[‘，’]’六种括号组成。
+    若字符串满足以下条件之一，则为无效字符串：
+    ①任一类型的左右括号数量不相等；
+    ②存在未按正确顺序（先左后右）闭合的括号。
+    输出括号的最大嵌套深度，若字符串无效则输出0。
+    0≤字符串长度≤100000
+    输入描述:
+    一个只包括 ‘(‘，’)’，'{‘，’}’，'[‘，’]’的字符串
+    输出描述:
+    一个整数，最大的括号深度
+    示例1  输入输出示例仅供调试，后台判题数据一般不包含示例
+    输入:[]
+    输出:1
+
+    说明
+    有效字符串，最大嵌套深度为1
+    示例2  输入输出示例仅供调试，后台判题数据一般不包含示例
+    输入:([]{()})
+    输出:3
+
+    说明:有效字符串，最大嵌套深度为3
+    示例3  输入输出示例仅供调试，后台判题数据一般不包含示例
+    输入:(]
+    输出:0
+    说明:无效字符串，有两种类型的左右括号数量不相等
+    示例4  输入输出示例仅供调试，后台判题数据一般不包含示例
+    输入:([)]
+    输出:0
+    说明:无效字符串，存在未按正确顺序闭合的括号
+    示例5  输入输出示例仅供调试，后台判题数据一般不包含示例
+    输入:)(
+    输出:0
+    说明:无效字符串，存在未按正确顺序闭合的括号。
+    注意题意：字符串仅由 ‘(‘，’)’，'{‘，’}’，'[‘，’]’六种括号组成
+    let left = ['[', '(', '{'];
+    let right = [']', ')', '}'];
+    let maxdepth = 0;
+    let stack = [];
+    try{
+        if(s.length % 2 != 0) return 0;
+        for (i of s) {
+            if(left.includes(i)){
+                stack.push(i);
+                if(stack.length > maxdepth){
+                    maxdepth = stack.length;
+                }
+            }else if(right.includes(i)){
+                let temp = stack.pop(-1);
+                if (right.indexOf(i) != left.indexOf(temp)){
+                    return 0
+                }
+            }else{
+                return 0
+            }
+        }
+    }catch{
+        return 0
+    }
+    if(stack.length > 0){
+        return 0;
+    }else{
+       return maxdepth 
+    }
+       console.log(maxDepth("{[]([])}"))
+        console.log(maxDepth("{[]([{}])}"))
+        console.log(maxDepth("{[]([{}])}{()}"))
+        console.log(maxDepth("}{"))
+        console.log(maxDepth("([)]"))
+        console.log(maxDepth("(]"))
+        console.log(maxDepth("([]{()})"))
+        console.log(maxDepth("(1)+((2))+(((3)))"));
+        console.log(maxDepth("(1+(2*3)+((8)/4))+1"));
+        // # 输出
+        // # 3
+        // # 4
+        // # 4
+        // # 0
+        // # 0
+        // # 0
+        // # 3
+        // # 3
+        // # 3
+    */
+    //console.log(maxDepth("{[]([{}])}{()}"))
+    function maxDepth(s){
+        let left = ['[', '(', '{'];
+        let right = [']', ')', '}'];
+        let stack = [];
+        let ans = 0, size = 0;
+        for (let i = 0; i < s.length; ++i) {
+            const ch = s[i];
+            if (ch === '(' || ch === '{' || ch === '[') {
+                stack.push(s[i]);
+                ++size;
+                ans = Math.max(ans, size);
+            } else if (ch === ')' || ch === '}' || ch === ']') {
+                --size;
+                let temp = stack.pop();
+                if (right.indexOf(s[i]) != left.indexOf(temp)) {
+                    return 0
+                }
+            }
+        }
+        if(stack.length > 0){
+            return 0;
+        }else{
+           return ans
+        }
+    }
+    
+    /*力扣：1614. 括号的最大嵌套深度
+    var maxDepth = function (s) {
+            let ans = 0, size = 0;
+            for (let i = 0; i < s.length; ++i) {
+                const ch = s[i];
+                if (ch === '(') {
+                    ++size;
+                    ans = Math.max(ans, size);
+                } else if (ch === ')') {
+                    --size;
+                }
+            }
+            return ans;
+        };
+    */
+    
+    
+    /*[120]IPV4地址转换为整数
+    存在一种虚拟IPv4地址，由4小节组成，每节的范围为0~255，以＃号间隔，
+    虛拟IPv4地址可以转换为一个32位的整数，例如：
+    128#0#255#255，转换为32位整数的结果为2147549183(0x8000FFFF)
+    1#O#O#0，转换为32位整数的结果为16777216(0x01000000)
+    现以字符串形式给出一个虚拟IPv4地址，限制第1小节的范围为1~128，
+    即每一节范围分别为（1~128)#(0~255)#(0-255)#(0-255)，
+    要求每个IPv4地址只能对应到唯一的整数上。如果是非法IPv4，返回 invalid IP 
+    输入描述：输入一行，虚拟IPv4地址格式字符串
+    输出描述：输出以上，按照要求输出整型或者特定字符
+    1．示例1
+    输入100#101#1#5
+    输出1684340997
+    2．示例2
+    输入1#2#3
+    输出 invalid IP 
+    备注：输入不能确保是合法的IPv4地址，需要对非法IPv4（空串,含有IP地址中
+    不存在的字符，非合法的＃分十进制，十进制整数不在合法区间内）进行识别，
+    返回特定错误
+    */
+    //ipv4ToInt('100#101#1#5') // 1684340997
+    //ipv4ToInt('1#2#3') // invalid IP
+    function ipv4ToInt(input) {
+        //let strings = readLine().split("#");
+        let strings = input.split("#");
+        let len = strings.length;
+        let count = 0;
+        let isF = true;
+        if (len == 4) {
+            for (let i = 0; i < len; i++) {
+                let n = Number(strings[i]);
+                if (i == 0 && (n < 1 || n > 128)) { //第一节 1~128
+                    isF = false;
+                    break;
+                } else if (n < 0 || n > 255) { //二、三、四节 0~255
+                    isF = false;
+                    break;
+                }
+                /**
+                 * 首先使用把IP地址分成4个数字： 128 199 231 44
+                 *
+                 * 把每个数字转换为2进制，如果转换后这个数字对应的二进制数不够8位，在左侧补0： 10000000 11000111 11100111 00101100
+                 */
+                count += n << (8 * (3 - i));
+            }
+        } else {
+            isF = false;
+        }
+        if (isF) {
+            console.log(count);
+        } else {
+            console.log("invalid IP");
+        }
+    }
+
+    /*[127]二叉树按照中序遍历输出【2022 Q1 Q2 | 100分】
+        题目描述
+        根据给定的二叉树结构描述字符串，输出该二叉树按照中序遍历结果字符串。中序遍历顺序为:左子树，根结点，右子树。
+    
+        输入描述
+        由大小写字母、左右大括号、逗号组成的字符串:
+        1、字母代表一个节点值，左右括号内包含该节点的子节点。
+        2、左右子节点使用逗号分隔，逗号前为空则表示左子节点为空,没有逗号则表示右子节点
+        为空。
+        3、二叉树节点数最大不超过100。
+        注:输入字符串格式是正确的，无需考虑格式错误的情况。
+    
+        输出描述
+        输出一个字符串，为二叉树中序遍历各节点值的拼接结果。
+    
+        示例：
+        输入：a{b{d, e{g,h{,I}}},c{f}｝
+        输出：dbgehiafc
+        */
+    //binaryTreeLMR('a{b{d{r,k},e{g,h{,i}}},c{f}}');
+    //binaryTreeLMR('a{b{d{r,k},e{g,h{,i}}},c{f{o,p{,m}}}}')
+    binaryTreeLMR('a{b{d,e{g,h{,i}}},c{f}}');
+    function binaryTreeLMR(str) {
+        let [len, index, result] = [str.length, 0, []];
+        if (len < 1) return;
+        let parentNode = [];
+        let root = new Node(str[0]);
+        let temp = root;
+        parentNode.push(temp);
+        if (index >= len) return;
+        for (let i = 0; i < len; i++) {
+            if (str[i] == '{' && str[i + 1] != ',') {
+                i++;
+                parentNode.push(temp);
+                temp.left = new Node(str[i]);
+                temp = temp.left;
+            } else if (str[i] == ',') {
+                if (str[i - 1] != '{' && str[i - 1] != '}') {// g,h
+                    i++;
+                    temp = parentNode.pop();
+                    temp.right = new Node(str[i]);
+                    temp = temp.right;
+                } else { //},c
+                    i++;
+                    parentNode.push(temp);
+                    temp.right = new Node(str[i]);
+                    temp = temp.right;
+                }
+            } else if (str[i] == '}') {
+                temp = parentNode.pop();
+            }
+        }
+        function Node(val, left, right) {//构建节点
+            if (!val) return null;
+            this.val = val;
+            this.left = left ? left : null;
+            this.right = right ? right : null;
+        }
+        function lmr(node, result) {//中序输出-左中右
+            if (node === null) return;
+            lmr(node.left, result);
+            result.push(node.val);
+            lmr(node.right, result);
+        }
+        lmr(root, result)
+        console.log(result.join(''));
+    }
+
+
+    /*[131]热点网站统计[200 分]
+       题目描述
+       企业路由器的统计页面，有一个功能需要动态统计公司访问最多的网页 URL top N。
+       请设计一个算法，可以高效动态统计 Top N 的页面。
+       输入描述
+       每一行都是一个 URL 或一个数字，如果是 URL，代表一段时间内的网页访问；
+       如果是一个数字 N，代表本次需要输出的 Top N 个 URL。
+       输入约束：
+       1、总访问网页数量小于 5000 个，单网页访问次数小于 65535 次；
+       2、网页 URL 仅由字母、数字和点分隔符组成，且长度小于等于 127 字节；
+       3、数字是正整数，小于等于 10 且小于当前总访问网页数；
+       输出描述
+       每行输入要对应一行输出，输出按访问次数排序的前 N 个 URL，用逗号分隔。
+       输出要求：
+       1、每次输出要统计之前所有输入，不仅是本次输入；
+       2、如果有访问次数相等的 URL，按 URL 的字符串字典序升序排列，输出排序靠前的 URL；
+       示例 1
+       输入
+       news.qq.com
+       news.sina.com.cn
+       news.qq.com
+       news.qq.com
+       game.163.com
+       game.163.com
+       www.huawei.com
+       www.cctv.com
+       3
+       www.huawei.com
+       www.cctv.com
+       www.huawei.com
+       www.cctv.com
+       www.huawei.com
+       www.cctv.com
+       www.huawei.com
+       www.cctv.com
+       www.huawei.com
+       3
+       输出
+       news.qq.com,game.163.com,news.sina.com.cn
+       www.huawei.com,www.cctv.com,news.qq.com
+   
+       示例 2
+       输入
+       news.qq.com
+       www.cctv.com
+       1
+       www.huawei.com
+       www.huawei.com
+       2
+       3
+       输出
+       news.qq.com
+       www.huawei.com,news.qq.com
+       www.huawei.com,news.qq.com,www.cctv.com
+       let test1 = `news.qq.com\nnews.sina.com.cn\nnews.qq.com\nnews.qq.com\ngame.163.com\ngame.163.com\nwww.huawei.com\nwww.cctv.com\n3\nwww.huawei.com\nwww.cctv.com\nwww.huawei.com\nwww.cctv.com\nwww.huawei.com\nwww.cctv.com\nwww.huawei.com\nwww.cctv.com\nwww.huawei.com\n3`;
+       hotWebsiteCount(test1);
+       */
+    //let test2 = `news.qq.com\nwww.cctv.com\n1\nwww.huawei.com\nwww.huawei.com\n2\n3\n`;
+    //hotWebsiteCount(test2);
+    function hotWebsiteCount(input) {
+        let map = new Map();
+        let list = input.split('\n');
+        //while (line = readline()) {
+        //let str = line;
+        for (let i = 0; i < list.length; i++) {
+            let str = list[i];
+            if (!str.includes(".")) { //不包含.的就是数字
+                let n = Number(str);
+                if (n > map.size) {   //如果数字大于网站个数这退出
+                    break;
+                }
+                let res = "";
+                let mapArray = Array.from(map);
+                mapArray.sort((a, b) => {  //对list进行降序排序
+                    return b[1] - a[1];
+                });
+                for (let j = 0; j < n; j++) {
+                    res += mapArray[j][0] + ",";
+                }
+                console.log(res.substring(0, res.length - 1));
+            } else {
+                if (map.has(str)) {
+                    map.set(str, map.get(str) + 1);
+                } else {
+                    map.set(str, 1);
+                }
+            }
+        }
+    }
+
+    /*[132]解压报文
+        解压报文 | 时间限制：1秒 | 内存限制：262144K | 语言限制：不限
+        为了提升数据传输的效率，会对传输的报文进行压缩处理。输入一个压缩后的报文，请返回它解压后的原始报文。
+        压缩规则：n[str]，表示方括号内部的 str 正好重复 n 次。注意 n 为正整数（0 < n <= 100），str只包含小写英文字母，不考虑异常情况。
+        " “输入描述:
+        输入压缩后的报文：
+        1）不考虑无效的输入，报文没有额外的空格，方括号总是符合格式要求的；
+        2）原始报文不包含数字，所有的数字只表示重复的次数 n ，例如不会出现像 5b 或 3[8] 的输入；
+        输出描述:
+        解压后的原始报文
+        注：
+        1）原始报文长度不会超过1000，不考虑异常的情况
+        示例1
+        输入
+        3[k]2[mn]
+        输出
+        kkkmnmn
+        说明
+        k 重复3次，mn 重复2次，最终得到 kkkmnmn
+        示例2
+        输入
+        3[m2[c]]
+        输出
+        mccmccmcc
+        说明
+        m2[c] 解压缩后为 mcc，重复三次为 mccmccmcc”
+        decompression('[m2[c2[oi2[jihyb]]]]');
+        decompression('3[m2[c]]');
+        decompression('3[k]2[mn]');
+        decompression('2[3[k]10[mn]]');
+    */
+    //decompression('[m2[c2[oi2[jihyb]]]]');
+    function decompression(s) {
+        let stack = [];
+        let len = s.length;
+        let index = len - 1
+        while (index >= 0) {
+            if (/\D/.test(s[index])) {// 非数字入栈
+                stack.push(s[index]);
+                index -= 1;
+            } else {//遇到数字时，解压
+                let num = "", res = "";
+                while (index >= 0 && /\d/.test(s[index])) {
+                    num = s[index] + num;
+                    index -= 1;
+                }
+                //说明此时的index处的字符一定是非数字的, 此时栈顶一定是左括号
+                while (stack[stack.length - 1] != "]") {
+                    let tmp = stack.pop();
+                    if (tmp != "[") {//只要字母
+                        res += tmp;
+                    }
+                }
+                stack.pop();// 弹出栈顶的元素 # 右括号
+                res = res.repeat(parseInt(num));//解压
+                stack.push(res);
+            }
+        }
+        stack.reverse(); // 反转字符串
+        console.log(stack.filter(item => /\w/.test(item)).join(''));
+    }
+    
+
+
+
+
+        
+
+
+
+//初始化二维数组
+//let dp =[...Array(n)].map(()=> Array(m).fill(0))
+
+//双层循环
+/*
+for (let i = 0; i < array.length; i++) {
+    for (let j = 0; j < array.length; j++) {
+        //在这里输入代码
+    }
+}
+*/
+
+/*
+// 单行输入数据
+while (line = readline()) {
+    
+}
+
+或多行处理完数据再处理算法
+let n = readline();
+let list = [];
+for (let i = 0; i < n; i++) {
+    let line = readline().split(' ').map(t => parseInt(t));
+    list.push(line);
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        //fiveKeyOut('1 1 5 1 5 2 4 4');//2
+        /*5键盘的输出*/
+   function fiveKeyOut(input) {
+        let list = input.split(' ').map(t=>parseInt(t));
+        let res = '';
+        let buffer='';
+        let pick = '';
+        for (let i = 0; i < list.length; i++) {
+            if(list[i]===1){
+                if(pick !=''){
+                    res='';
+                    pick='';
+                }
+                res += 'A';
+            }else if (list[i] === 2) {
+                if (pick != '') {
+                    buffer = pick;
+                }
+            }else if (list[i] === 3) {
+                if (pick != '') {
+                    buffer = pick;
+                    res = '';
+                    pick = '';
+                }
+            } else if (list[i] === 4) {
+                if (pick != '') {
+                    res = '';
+                    pick = '';
+                }
+                if (buffer != '') {
+                    res += buffer;
+                }
+            }else if (list[i] === 5) {
+                if (res != '') {
+                    pick = res;
+                }
+            }
+        }
+        console.log(res.length);
+   }
+    
+    /*分糖果II*/
+   //distributeCanides(15)
+   function distributeCanides(input) {
+    let n = parseInt(input);
+    function candy(num) {
+        if(num === 2) return 1;
+        if(num%2==0){
+            return candy(Math.floor(num/2))+1;
+        } else{
+            return Math.min(candy(num+1)+1,candy(num-1)+1);
+        }
+    }
+    console.log(candy(n));
+   }
+
+    /*幼儿园小朋友分班*/
+   //findChilds('1/N 2/Y 3/N 4/Y 5/Y')
+   function findChilds(input) {
+        let childs = input.split(' ');
+        let res = [[],[]];
+        let preFlag = 0;
+        for (let i = 0; i < childs.length; i++) {
+            let [index,isSame] = childs[i].split('/');
+            if(i===0){
+                res[0].push(index);
+            }else{
+                if(isSame === 'N'){
+                    preFlag = Number(!preFlag);
+                }
+                res[preFlag].push(index);
+            }
+        }
+        for (let j = 0; j < 2; j++) {
+            console.log(res[j].join(' '));
+        }
+   }
+
+   //assignmentArrangement('2\n2\n1 1\n2 2\n3\n1 1\n2 2\n3 3')
+   /*高效的任务规划
+       题目描述：
+       你有 n 台机器编号为 1~n，每台都需要完成完成一项工作，机器经过配置后都能完成独立完成一项工作。
+       假设第 i 台机器你需要花 B 分钟进行设置，然后开始运行，J 分钟后完成任务。
+       现在，你需要选择布置工作的顺序，使得用最短的时间完成所有工作。
+       注意，不能同时对两台机器进行配置，但配置完成的机器们可以同时执行它们各自的工作。
+       注：此题对效率有要求，请考虑高效的实现方式
+
+       输入描述：
+       第一行输入代表总共有 M 组任务数据（1 < M <= 10）。
+       每组数第一行为一个整数，指定机器的数量 N（0 < N <= 1000）。
+       随后的 N 行每行两个整数，第一个表示 B（0 <= B <= 10000），第二个表示 J（0 <= J <= 10000）。
+       每组数据连续输入，不会用空行分隔。
+       各组任务单独计时。
+       输出描述：
+       对于每组任务，输出最短完成时间，且每组的结果独占一行。
+       例如，两组任务就应该有两行输出。
+       示例 1：
+
+       输入
+       1
+       1
+       2 2
+       输出
+       4
+       说明
+       第一行1为一组任务，
+       第二行1代表只有一台机器，
+       第三行表示该机器配置需2分钟，执行需要2分钟。
+       示例 1：
+
+       输入
+       2
+       2
+       1 1
+       2 2
+       3
+       1 1
+       2 2
+       3 3
+       输出
+       4
+       7
+       说明
+       第一行2代表两组任务，
+       第二行2代表第一组任务有2个机器，
+       第三行1 1代表机器1配置需要1分运行需要1分，
+       第四行2 2代表机器2配置需要2分运行需要2分，
+       第五行3代表第二组任务需要3个机器，
+       第6 - 8行分别表示3个机器的配置与运行时间。
+       */
+    function assignmentArrangement(input) {
+        let list = input.split('\n');
+        let M = parseInt(list[0]);
+        let prevN = 1;
+        for (let m = 0; m < M; m++) {
+            let N = parseInt(list[prevN]);
+            // 动态规划，让任务工作时间最长的机器先运行，这样总体时间才最短啊
+            // 空间优化
+            let time = 0;
+            let last = 0; // 之前机器配置完成的时间
+            let res = 0; //总时间
+            let machine = [...Array(N)].map(() => Array(2).fill(0));
+            // 每组任务的N台机器的配置时间和工作时间
+            for (let i = 0; i < N; i++) {
+                let BJ = list[prevN + i + 1].split(' ');
+                machine[i][0] = parseInt(BJ[0]);
+                machine[i][1] = parseInt(BJ[1]);
+            }
+            // lambda按第二元素降序排序，即按工作时间降序排序
+            machine.sort((e1, e2) => (e2[1] - e1[1]));
+            for (let i = 0; i < N; i++) {
+                time = last + machine[i][0] + machine[i][1];
+                last += machine[i][0];
+                res = Math.max(res, time);
+            }
+            prevN = parseInt(list[prevN]) + prevN + 1;
+            console.log(res);
+        }
+
+    }
+   
+    //圆桌队列：约瑟夫问题
+    function lastNum(input,k) {
+        let res = [];
+        let index = count = 0;
+        let m = k;
+        let nums = input.slice();
+        let len = nums.length;
+        while (len > 0) {
+            while (count < m) {
+                count ++;
+                if(count === m){
+                    if(index === len){
+                        m = nums.pop(index);
+                        index = 0;
+                    }else{
+                        m = parseInt(nums[index]);
+                        nums.splice(index, 1);
+                    }
+                    res.push(m);
+                    len = nums.length;
+                    count = 0;
+                    break;
+                }else{
+                    if (index === len - 1) {
+                        index = 0
+                    }else{
+                        index ++;
+                    }
+                }
+            }
+        }
+        console.log(res);
+    }
+    //lastNum([3,1,2,4],7);
+
+        
+    /*路灯照明问题*/
+    function roadLight(input) {
+        let list = input.split('\n');
+        let [n,l] = list[0].split(' ').map(t=>parseInt(t));
+        let pos = list[1].split(' ').map(t => parseInt(t));
+        pos.sort((a,b)=>a-b);
+        let maxLen = Math.max(pos[0],l-pos[n-1]);
+        for (let i = 0; i < n-1; i++) {
+            let curLen = (pos[i+1]-pos[i])/2;
+            maxLen = Math.max(maxLen,curLen);
+        }
+        console.log(maxLen.toFixed(2));
+    }
+    //roadLight('7 15\n15 5 3 7 9 14 0');
+
+    /*路灯覆盖问题
+    一条笔直的公路上安装了N个路灯，从位置0开始安装，路灯之间的距离是100m。
+    每个路灯都有自己的照明半径，请计算第一个路灯和最后一个路灯之间，未照明区间的长度和。
+    输入描述：
+    第一行为一个数N，表示灯的个数，[1, 100000]
+    第二行为N个空格分隔的数，表示路灯的照明半径，[1, 100*100000]
+    输出描述：
+    第一个路灯和最后一个路灯之间，未照明区间的长度和
+    举例：
+    输入: 
+    8
+    10 10 10 10 10 10 10 10
+    输出：
+    560
+    输入：
+    8
+    10 10 10 250 10 10 10 10
+    输出：
+    160
+    */
+   function roadLightRange(input) {
+        let list = input.split('\n');
+        let n= parseInt(list[0]);
+        let rNums = list[1].split(' ').map(t => parseInt(t));
+        let res = [];
+        let lightSum = 0;
+        for (let i = 0; i < n; i++) {
+            let l = Math.max(0,100*i-rNums[i]);
+            let r = Math.min((n-1)*100,100*i+rNums[i]);
+            while (res.length>0 && res[res.length-1][1]>l) {
+                let [left,right] = res.pop(res.length - 1);
+                lightSum -= right - left;
+                l = Math.min(left, l);
+                r = Math.max(right, r);
+            }
+            lightSum += r - l
+            res.push([l, r])
+        }
+        console.log((n - 1) * 100 - lightSum);
+   }
+   //roadLightRange('8\n10 10 10 250 10 10 10 10')
+
+   //str2tree('4(2(3)(1))(6(5))')
+   // 从字符串生成二叉树
+    function str2tree(input) {
+        let s = input.split('');
+        let [index, len, result] = [0, s.length, []];
+        function TreeNode(val, left, right) {
+            this.val = val;
+            this.left = left ? left : null;
+            this.right = right ? right : null;
+        }
+        function buildTree() {
+            if (index >= len) return;
+            let value = '';
+            while (index < len && (/\d/.test(s[index]) || s[index] == '-')) {
+                value += s[index];
+                index += 1;
+            }
+            let root = new TreeNode(value);
+            if (index < len && s[index] == '(') {
+                index += 1;
+                root.left = buildTree();
+                index += 1;
+            }
+            if (index < len && s[index] == '(') {
+                index += 1;
+                root.right = buildTree();
+                index += 1;
+            }
+            return root;
+        }
+        let tree = buildTree();result.push(tree.val);
+        function bsfTree(root) {
+            if (root === null) return;
+            if (root.left) result.push(root.left.val);
+            if (root.right) result.push(root.right.val);
+            bsfTree(root.left);
+            bsfTree(root.right);
+        }
+        bsfTree(tree);
+        console.log(result);
+    }
+
+/*?整数拆分*/ 
+    //splitNum('4\n3\n5\n1\n2');
+function splitNum(input) {
+    let list = input.split('\n');
+    for (let m = 0; m < list.length; m++) {
+        let nums = parseInt(list[m]);
+        let [N,K]=[nums,nums];
+        //let dp = Array.from(Array(N+1)).map(()=>Array(K+1).fill(0));
+        let dp = Array.from({length:N+1},x=>Array.from({ length: N + 1 },y=>0));
+
+        console.log(dp);
+        for (let i = 1; i <= K; i++) {
+            dp[1][i] = 1   
+        }
+        for (let i = 1; i <= N; i++) {
+            dp[i][1] = 1
+        }
+        for (let i = 2; i <= N; i++) {
+            for (let j = 2; j <= K; j++) {
+                if(i<j){
+                    dp[i][j]=dp[i][i];
+                }else if(i>j){
+                    dp[i][j] = dp[i-j][j] + dp[i][j-1];
+                }else{
+                    dp[i][j] = dp[i][j+1] + 1;
+                }
+            }
+            
+        }
+        console.log(dp,dp[N][K]);
+    }
+}
+
+        /* 玩牌高手
+        给定一个长度为n的整型数组，表示一个选手在n轮内可选择的牌面分数。选手基于规则选牌，请计算所有轮结束后其可以获得的最高总分数。
+        选择规则如下：
+        在每轮里选手可以选择获取该轮牌面，则其总分数加上该轮牌面分数，为其新的总分数。
+        选手也可不选择本轮牌面直接跳到下一轮，此时将当前总分数还原为3轮前的总分数，若当前轮次小于等于3（即在第1、2、3轮选择跳过轮次），则总分数置为0。
+        选手的初始总分数为0，且必须依次参加每一轮。
+        输入描述
+        第一行为一个小写逗号分割的字符串，表示n轮的牌面分数，1<= n <=20。
+        分数值为整数，-100 <= 分数值 <= 100。
+        不考虑格式问题。
+        输出描述
+        所有轮结束后选手获得的最高总分数。
+
+        示例 1：
+        输入
+        1,-5,-6,4,3,6,-2
+        输出
+        11
+        说明
+        总共有7轮牌面。
+        第一轮选择该轮牌面，总分数为1。
+        第二轮不选择该轮牌面，总分数还原为0。
+        第三轮不选择该轮牌面，总分数还原为0。
+        第四轮选择该轮牌面，总分数为4。
+        第五轮选择该轮牌面，总分数为7。
+        第六轮选择该轮牌面，总分数为13。
+        第七轮如果不选择该轮牌面，则总分数还原到3轮1前分数，即第四轮的总分数4，如果选择该轮牌面，总分数为11，所以选择该轮牌面。
+        因此，最终的最高总分为11。
+        思路分析
+        简单的模拟题。按规则走就行了。
+*/
+        function cardPlayer(input) {
+            let nums = input.split(',');
+            let dp = Array(nums.length + 1).fill(0);
+            function abandon(n) {
+                if (n < 3) {
+                    return 0;
+                } else {
+                    return dp[n-3];
+                }
+            }
+            for (let i = 1; i < nums.length +1; i++) {
+                dp[i] = Math.max(abandon(i), dp[i - 1] + parseInt(nums[i - 1]));
+            }
+            console.log(dp);
+            return dp[nums.length];
+        }
+        //console.log(cardPlayer('1,-5,-6,4,3,6,-2'));
+
+        /*数大雁
+        题目描述
+        一群大雁往南飞，给定一个字符串记录地面上的游客听到的大雁叫声，请给出叫声最少由几只大雁发出。
+        具体的:
+        1.大雁发出的完整叫声为”quack“，因为有多只大雁同一时间嘎嘎作响，所以字符串中可能会混合多个”quack”。
+
+        2.大雁会依次完整发出”quack”，即字符串中’q’ ,‘u’, ‘a’, ‘c’, ‘k’ 这5个字母按顺序完整存在才能计数为一只大雁。如果不完整或者没有按顺序则不予计数。
+
+        3.如果字符串不是由’q’, ‘u’, ‘a’, ‘c’, ‘k’ 字符组合而成，或者没有找到一只大雁，请返回 - 1。
+
+        输入描述
+
+        一个字符串，包含大雁quack的叫声。1 <= 字符串长度 <= 1000，字符串中的字符只有’q’, ‘u’, ‘a’, ‘c’, ‘k’。
+
+        输出描述
+        大雁的数量
+
+        示例1   输入输出示例仅供调试，后台判题数据一般不包含示例
+
+        输入
+        quackquack
+        输出
+
+        1
+        */
+        function quackquack(input) {
+            let len = input.length,
+                obj = {
+                    'q': 0,
+                    'u': 0,
+                    'a': 0,
+                    'c': 0,
+                    'k': 0
+                },
+                result = 0;
+
+            for (let i = 0; i < len; i++) {
+                obj[input[i]]++
+                result = Math.max(obj.q - obj.k, result)
+                if (!(obj.q >= obj.u && obj.u >= obj.a && obj.a >= obj.c && obj.c >= obj.k))
+                    return -1
+            }
+            if (!(obj.q == obj.u && obj.q == obj.a && obj.a == obj.c && obj.c == obj.k))
+                return -1
+            return result
+        }
+        //console.log(coutQuack2('quackquack'));
+
+
+        //olympicGame('5\nChina 32 28 34\nEngland 12 34 22\nFrance 23 33 2\nJapan 12 34 22\nRussia 23 43 0')
+        /*Olympic Game 奥运会排行榜
+        题目描述:
+        2012伦敦奥运会即将到来，大家都非常关注奖牌榜的情况，现在我们假设奖牌榜的排名规则如下：
+        1、首先gold medal数量多的排在前面；
+        2、其次silver medal数量多的排在前面；
+        3、然后bronze medal数量多的排在前面；
+        4、若以上三个条件仍无法区分名次，则以国家名称的字典序排定。
+        我们假设国家名称不超过20个字符、各种奖牌数不超过100，且大于等于0。
+        输入:
+        第一行输入一个整数N(0 < N < 21)，代表国家数量;
+        然后接下来的N行，每行包含一个字符串Namei表示每个国家的名称，
+        和三个整数Gi、Si、Bi表示每个获得的gold medal、silver medal、bronze medal的数量，
+        以空格隔开，如(China 51 20 21)，具体见样例输入。
+
+        输出:
+        输出奖牌榜的依次顺序，只输出国家名称，各占一行，具体见样例输出。
+
+        样例:
+        输入:
+
+        5
+        China 32 28 34
+        England 12 34 22
+        France 23 33 2
+        Japan 12 34 22
+        Russia 23 43 0
+        输出:
+
+        China
+        Russia
+        France
+        England
+        Japan
+        */
+        function olympicGame(input) {
+            //使用sorted
+            let list = input.split('\n');
+            let para = []
+            //国家数
+            let n = parseInt(list[0]);
+            for (let i = 1; i < n + 1; i++) {
+                let data = list[i].split(' ');
+                para.push(data);
+            }
+            para.sort((a, b) => b[0].charAt(0) - a[0].charAt(0));
+            para.sort((a, b) => b[3] - a[3]);
+            para.sort((a, b) => b[2] - a[2]);
+            para.sort((a, b) => b[1] - a[1]);
+            for (let i = 0; i < para.length; i++) {
+                console.log(para[i][0]);
+            }
+        }
+
+        //全排列
+        function permulate(str) {
+            const result = [];
+            const used= Array.from(str.length).fill(false);
+            function backtracking(candidate,memo) {
+                if(memo.length===str.length){
+                    result.push(memo.slice().join(''));
+                    return;
+                }
+                for (let i = 0; i < candidate.length; i++) {
+                    if(used[i]) continue;
+                    memo.push(candidate[i]);
+                    used[i] = true;
+                    backtracking(candidate, memo);
+                    used[i] = false;
+                    memo.pop(candidate[i])
+                }
+            }
+            backtracking(str,[]);
+            //return [...new Set(result)]//去重输出
+            return result //不需要去重输出
+        }
+        //console.log(permulate('abc'));
+
+        //求字符串重新排列的所有不同的排列数；
+        function reSort(input) {
+            if(input.length===0) return [''];
+            if (input.length === 1) return [input];
+            let res = [];
+            let len = input.length;
+            for (let i = 0; i < len; i++) {
+                let char = input[i];//取出一个字符为char
+                //newStr = 去掉char后剩下的字符
+                let newStr = input.slice(0,i)+input.slice(i+1);
+                //递归产生newStr的全排列，
+                let next = reSort(newStr);
+                next.forEach(item => {
+                    res.push(char + item);
+                });
+            }
+            return [... new Set(res)];
+        }
+
+         //数组组成的最小数字
+         function joinMinNum(input) {
+            let list = input.split(',');
+            list.sort((a,b)=> a-b);
+            let minRes = 0;
+            if(list.length<3){
+                minRes = list.length===1
+                        ?list[0]
+                        :Math.min([list[0], list[1]].join(''), [list[1], list[0]].join(''));
+            }else{
+                let data = list.slice(0,3);
+                let min = [];
+                for (let i = 0; i < data.length; i++) {
+                    let select =[data[i]];
+                    let group = data.slice().filter(t=>t!==data[i]);
+                    min.push(select.concat([group[0],group[1]].join('')));
+                    min.push(select.concat([group[1], group[0]].join('')));
+                }
+                minRes = Math.min(...min);
+            }
+            console.log(minRes);
+         }
+        
+        /*考古学家
+        考古问题，假设以前的石碑被打碎成了很多块，每块上面都有一个或若干个字符，
+        请你写个程序来把之前石碑上文字可能的组合全部写出来，按升序进行排列。
+
+        示例1   输入输出示例仅供调试，后台判题数据一般不包含示例
+        输入
+        3
+        a b c
+        输出
+        abc
+        acb
+        bac
+        bca
+        cab
+        cba
+
+        示例2   输入输出示例仅供调试，后台判题数据一般不包含示例
+
+        输入
+        3
+        a b a
+        输出
+        aab
+        aba
+        baa
+         */
+         function kaoguxuejia(input) {
+            let str=input.split(' ').join('');
+            console.log(reSort(str));
+         }
+         //kaoguxuejia('a b a');
+
+         // 
+         //MaxAndMin('5\n3 3 2 4 2\n1');
+         //MaxAndMin('5\n3 3 2 4 2\n2');
+         /*求数组中最大n个数和最小n个数的和
+         题目描述
+         输入一个数 M ，表示数组中有 M 个数
+         输入 M 个数。
+         输入 n
+         求数组 M 中，去除重复值后，最大 n 个数和最小 n 个数的和
+          注意：最大和最小的数中不能有重复值，否则输出 - 1
+
+          样例输入
+          5
+          3 3 2 4 2
+          2
+          样例输出
+              - 1
+          说明
+          去除重复后最大的2个数为[4, 3]，最小的2个数为[2, 3]；有相同值，所以返回 - 1
+
+          样例输入
+          5
+          3 3 2 4 2
+          1
+          样例输出
+          6
+          说明
+          去除重复后最大的1个数为[4]，最小的1个数为[2]；没有相同值，返回6
+
+         【分析】
+          获取到输入的数组，先通过 Set 去重，得到新的数组，此时的数组长度必须大于等于 2n ，
+          否则就会重复；如果不重复，求出结果;
+          */
+         function MaxAndMin(input) {
+             let str = input.split('\n');
+             const input1 = str[0]
+             const input2 = str[1]
+             const input3 = str[2]
+            // 得到去重，排序后的数组
+            const arr = Array.from(new Set(input2.split(" ").map(x => parseInt(x, 10)))).sort((a, b) => a - b)
+
+            // 判断是否符合要求
+            const len = arr.length
+            const n = parseInt(input3, 10)
+            if (len >= 2 * n) {
+                // 最大值最小值不会重复
+                let num = 0
+                for (let i = 0; i < n; i++) {
+                    num += arr[i] + arr[len - 1 - i]
+                }
+
+                console.log(num);
+            } else {
+                console.log(-1);
+            }
+         }
+
+         //跳格子游戏
+
+         // 前端算法js：跳格子游戏
+         function jumpGame2(num, arr) {
+            let arrFlag, arrNode, stepAll; // 节点遍历状态，节点的相邻启动点数组，是否完成所有步骤
+            arrFlag = new Array(num).fill(0); // 初始化节点状态为0 ，1=已经遍历了，死循环；2=该节点已经遍历完成了
+            stepAll = true; // 默认能完成所有节点
+            arrNode = []; // 相邻节点启用数组
+            for (let i = 0; i < num; i++) {
+                arrNode.push(arr.filter((el) => el[1] == i).map((elc) => elc[0])); // 将数组过滤并map成需要的节点启用数组
+            }
+            if (arrNode.some((el) => !el.length)) { // 有没有默认开启的节点
+                for (let i = 0; i < num && stepAll; i++) { // 对每隔节点使用dfs遍历，判断是否完成全部节点
+                    if (arrFlag[i] == 0) { // 只有当该节点没有被遍历的情况下执行dfs
+                        dfs(i);
+                    }
+                }
+                return stepAll ? "yes" : "no"; // 返回结果stepAll来自dfs的遍历处理
+            } else {
+                return "no"; // 如果没有默认开启的节点就直接no
+            }
+            function dfs(index) {
+                arrFlag[index] = 1; // 第一步设置遍历状态为已遍历
+                let arrNodeChild = arrNode[index]; // 获取当前节点下的所有启动节点
+                for (let j = 0, len = arrNodeChild.length; j < len; j++) { // 遍历启动节点
+                    if (arrFlag[arrNodeChild[j]] == 0) { // 如果启动节点未启动状态
+                        dfs(arrNodeChild[j]); // 继续dfs
+                        if (!stepAll) { // 若dfs中遍历到已经遍历过的节点，跳出循环
+                            break;
+                        }
+                    } else if (arrFlag[arrNodeChild[j]] == 1) { // 若遍历到已经遍历过的节点，跳出循环
+                        stepAll = false; // 并设stepAll为false，意思是这个遍历不成功，并跳出循环
+                        break;
+                    }
+                }
+                arrFlag[index] = 2; // 若上面循环顺利完成，意思当前节点及其启动节点都已经通过dfs，表示该节点已经遍历完
+            }
+        }
+        
+        //console.log(jumpGame2(3, [[0, 1], [0, 2],])); // yes
+
+        //停车位问题，最远距离
+        function maxdistance(input) {
+            let list = input.split(',').map(t => parseInt(t));
+            let [l, r] = [0, list.length - 1];
+            let [left, right] = [0, 0];
+            while (list[l] === 0) {
+                l++;
+                left++;
+            }
+            while (list[r]) {
+                r--;
+                right++;
+            }
+            let res = Math.max(left, right);
+            let zero = 0;
+            while (l <= r) {
+                if (list[l] === 0) zero++;
+                else {
+                    res = Math.max(res, max.ceil(zero / 2));
+                    zero = 0;
+                }
+                l++;
+            }
+            return res;
+        }
+
+
+        //判断字符串子序列
+         function lastSubQueue(input) {
+            let target = input.split(',')[0];
+            let source = input.split(',')[1];
+            let [i,j]=[target.length-1, source.length - 1];
+            let index =0;
+            while (i>=0) {
+                index = 0;
+                while (j>=0) {
+                    if(target[i== source[i]]){
+                        index=j;
+                        j--;
+                        break;
+                    }else{
+                        index = j;
+                        j--;
+                        continue;
+                    }
+                }
+                i--;
+            }
+            console.log(index);
+         }
+
+         //太阳能板最大面积
+        function maxMul(input) {
+            let list = input.split(',');
+            let res = 0;
+            for (let i = 0; i < list.length-1; i++) {
+                for (let j = i+1; j < list.length; j++) {
+                    res= Math.max(res,(j-i)*Math.min(list[i],list[j]));
+                }
+            }
+            console.log(res);
+        }
+
+        //拼接URL
+        function concatUrl(input) {
+            let s = input.split(',');
+            let res = '';
+            if(s.length===0){
+                res='/';
+            }else{
+                res +=s.join('/');
+                res = res.replace(/[\/]+/g,'/').trim();
+            }
+            console.log(res);
+        }
+
+        //putApple('7, 3')
+        /*放苹果-动态规划
+        把m个同样的苹果放在n个同样的盘子里，允许有的盘子空着不放，问共有多少种不同的分法？
+        注意：如果有7个苹果和3个盘子，（5，1，1）和（1，5，1）被视为是同一种分法。
+        数据范围：0≤m≤10 ，1≤n≤10 。
+
+        输入描述：
+        输入两个int整数
+
+        输出描述：
+        输出结果，int型
+
+        示例1
+        输入：
+        7 3
+        输出：
+        8
+        */
+        function putApple(input) {
+            // while (input = readline()) {
+                var nums = input.split(" ").map(function (item) { return parseInt(item) });
+                var m = nums[0];
+                var n = nums[1];
+                if (m == 0 || m == 1 || n == 1) {
+                    console.log(1);
+                    return;
+                }
+                let dp = Array.from(Array(m + 1)).map(() => Array(n + 1).fill(0));
+                //如果只有一个盘子则只有一种放置方案
+                for (let i = 0; i <= m; i++) {
+                    dp[i][1] = 1;
+                }
+
+                //如果没有苹果则只有一种放置方案
+                for (let i = 0; i <= n; i++) {
+                    dp[0][i] = 1;
+                    dp[1][i] = 1;
+                }
+                // console.log(dp);
+
+                for (let i = 2; i <= m; i++) {
+                    for (let j = 2; j <= n; j++) {
+                        if (i < j) {
+                            dp[i][j] = dp[i][i];
+                        } else {
+                            dp[i][j] = dp[i - j][j] + dp[i][j - 1];
+                        }
+                    }
+                }
+                console.log(dp[m][n]);
+            //}
+            
+        }
+
+        //统计每个月兔子的总数
+        //conutRabit('3')
+        function conutRabit(input) {
+            /*
+            描述
+            有一种兔子，从出生后第3个月起每个月都生一只兔子，小兔子长到第三个月后每个月又生一只兔子。
+            例子：假设一只兔子第3个月出生，那么它第5个月开始会每个月生一只兔子。
+            一月的时候有一只兔子，假如兔子都不死，问第n个月的兔子总数为多少？
+            数据范围：输入满足 1 \le n \le 31 \1≤n≤31 
+            输入描述：
+            输入一个int型整数表示第n个月
+
+            输出描述：
+            输出对应的兔子总数
+
+            示例1
+            输入：
+            3
+            复制
+            输出：
+            2
+            */
+            //while (line = parseInt(readline())) {
+                let line = parseInt(input)
+                let dp = Array(line + 1).fill(0);
+                dp[1] = 1;
+                dp[2] = 1;
+                for (let i = 3; i <= line; i++) {
+                    dp[i] = dp[i - 1] + dp[i - 2];
+                }
+                console.log(dp[line]);
+            //}
+        }
+        
+        //editDistace('zikwvkijajpkaicihcffiemzexmwjj','wpnmubqfsnmapqpufm');
+        /*计算字符串的编辑距离
+        描述
+        Levenshtein 距离，又称编辑距离，指的是两个字符串之间，由一个转换成另一个所需的最少编辑操作次数。
+        许可的编辑操作包括将一个字符替换成另一个字符，插入一个字符，删除一个字符。
+        编辑距离的算法是首先由俄国科学家 Levenshtein 提出的，故又叫 Levenshtein Distance 。
+        例如：
+        字符串A: abcdefg
+        字符串B: abcdef
+        通过增加或是删掉字符 ”g” 的方式达到目的。这两种方案都需要一次操作。
+        把这个操作所需要的次数定义为两个字符串的距离。
+        要求：
+        给定任意两个字符串，写出一个算法计算它们的编辑距离。
+        数据范围：给定的字符串长度满足 1 \le len(str) \le 1000 \1≤len(str)≤1000 
+        输入描述：
+        每组用例一共2行，为输入的两个字符串
+
+        输出描述：
+        每组用例输出一行，代表字符串的距离
+        示例1
+        输入：
+        abcdefg
+        abcdef
+        复制
+        输出：
+        1
+        */
+        function editDistace(str1,str2) {
+            let m = str1.length;
+            let n = str2.length;
+            let dp = Array.from(Array(m + 1)).map(()=>Array(n+1).fill(0));
+            for (let i = 1; i <= m; i++){
+                dp[i][0] = i;
+            }
+            for (let j = 1; j <= n; j++) {
+                dp[0][j] = j;
+            }
+            console.log(dp);
+            for (let i = 1; i <= m; i++) {
+                for (let j = 1; j <= n; j++) {
+                    if(str1[i-1]=== str2[j-1]){
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }else{
+                        dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i][j - 1], dp[i-1][j]) + 1;
+                    }
+                    
+                }
+            }
+            console.log(dp[m][n]);
+        }
+
+
+
+    //splitDelim('abcbebb','b');
+    /*字符串分割
+    题目：
+    实现字符串分割算法split(str, delim), 传入待分割字符串和分割字符，返回数组，
+    如果delim参数不传，则对字符串逐个分割。
+    比如调用split(“abcbebb”,‘b’)，返回为[“a”,“c”,“e”]，
+    调用split(‘abcd’)，返回[‘a’,‘b’,‘c’,d’]
+    */
+    function splitDelim(str, delim) {
+        let newStr = [];
+        let temp = ''
+        for (let i = 0; i < str.length;) {
+            if (delim.length > 0) {
+                let index = 0;
+                while (index < delim.length && str[i + index] === delim[index]) {
+                    index++;
+                }
+                if (index < delim.length) {
+                    temp += str[i];
+                    i++;
+                } else {
+                    if (temp.length > 0) {
+                        newStr.push(temp)
+                    };
+                    temp = '';
+                    i += delim.length
+                }
+            } else {
+                newStr.push(str[i]);
+                i++;
+            }
+        }
+        if (temp.length > 0) {
+            newStr.push(temp)
+        }
+        return newStr;
+    }
+
+        
+        // 字符串排序  
+        //sortStr(['cap', 'to', 'cat', 'card', 'two', 'too', 'up', 'boat', 'boot'])
+        function sortStr(input) {
+            console.log(input.sort());
+        }
+        // migong('# # # # # #\n# # # # # 0\n0 0 0 0 # #\n# # # # # #')
+        // 机器人走迷宫 【200分】
+        function migong(input,k) {
+            let list = input.split('\n').map((t)=>t.split(' '));
+            let x = list.length,y = list[0].length;
+            let dp = [...Array(x)].map(() => Array(y).fill(0));
+            let pSet = new Set(),rowSet = new Set(),badPath = 0,noWay = 0; //陷阱 // 不可达
+            for (let i = 0; i < x; i++) {
+                for (let j = 0; j < y; j++) {
+                    if (list[i][j] === '#') {
+                        dp[i][j] = 1;
+                    }else{
+                        pSet.add([i,j]);rowSet.add(i);
+                    }}}
+            rowSet=[...rowSet];pSet = [...pSet]
+            let kArr = []
+            for (let i = 0; i < y; i++) {
+                let str = pSet.toString();
+                if(!str.includes(i)){
+                    kArr.push(i)
+                }}
+            kArr.sort();
+            let minCol = Math.min(...kArr),maxCol = Math.max(...kArr),minRow = Math.min(...rowSet);
+            let maxRow = Math.max(...rowSet);
+            if(kArr.length===0){
+                for (let i = 0; i <=minRow; i++) {
+                    for (let j = 0; j < y; j++) {
+                        if (list[i][j] === '#') {
+                            dp[i][j] = 2;
+                            badPath++;
+                        } else {
+                            break
+                        }
+                    }
+                }
+                for (let i = maxRow; i < x; i++) {
+                    for (let j = 0; j < y; j++) {
+                        if (list[i][j] === '#') {
+                            dp[i][j] = 2;
+                            noWay++;
+                        }
+                    }
+                }
+            } else {
+                for (let i = maxRow; i < x; i++) { 
+                    for (let j = 0; j < minCol; j++) {
+                        if(dp[i][j] === 1){
+                            dp[i][j] = 3;
+                            noWay++;
+                        }}}
+                for (let i = 0; i < minRow; i++) {
+                    for (let j = maxCol + 1; j < y; j++) {
+                        if(dp[i][j] === 1){
+                            dp[i][j] = 2;
+                            badPath++;
+                        }}}}
+            console.log(badPath + " " + noWay);
+        }
+
+
+        //findWords('some local buses, some1234123drivers');
+        /*在字符串中找单词
+        在给定字符串中找出单词（ “单词”由大写字母和小写字母字符构成，其他非字母字符视为单词的间隔，
+        如空格、问号、数字等等；另外单个字母不算单词）；
+        找到单词后，按照长度进行降序排序，（排序时如果长度相同，则按出现的顺序进行排列），
+        然后输出到一个新的字符串中；
+
+        如果某个单词重复出现多次，则只输出一次；如果整个输入的字符串中没有找到单词，请输出空串。
+        输出的单词之间使用一个“空格”隔开，最后一个单词后不加空格。
+        要求实现函数：
+
+        void my_word(charinput[], char output[])
+        【输入】 char input[], 输入的字符串
+        【输出】 char output[]，输出的字符串
+        【返回】 无
+        示例
+        输入：charinput[]="some local buses, some1234123drivers" ，
+        输出：charoutput[]="drivers local buses some"
+        输入：charinput[]="%A^123 t 3453i*()" ，
+        输出：charoutput[]=""
+        */
+        function findWords(input,result) {
+           let reg = /[a-zA-Z]+/g;
+           let words = input.match(reg);
+           result = words.filter(w=> w.length>1);
+           result = [...new Set(result)]
+           if(result.length > 0){
+                result.sort((a,b) => b.length - a.length);
+           }
+           console.log(result.join(' '));
+
+        }
+
+        //WeAreATeam(5, '1 2 0,1 2 1,1 5 0,2 3 1,2 5 1,1 3 2', 6);
+        /* We Are A Team
+        题目
+        总共有n个人在机房，每个人有一个标号（1 <= 标号 <= n），他们分成了多个团队，需要你根据收到的m条消息判定指定的两个人是否在一个团队中，具体的：
+        1、消息构成为：a b c，整数a、b分别代表了两个人的标号，整数c代表指令。
+        2、c0代表a和b在一个团队内。
+        3、c1代表需要判定a和b的关系，如果a和b是一个团队，输出一行“we are a team”，如果不是，输出一行“we are not a team”。
+        4、c为其它值，或当前行a或b超出1~n的范围，输出“da pian zi”。
+        输入描述:
+        1、第一行包含两个整数n, m(1 <= n, m <= 100000)，分别表示有n个人和m条消息。
+        2、随后的m行，每行一条消息，消息格式为:a b c(1 <= a, b <= n, 0 <= c <= 1)。
+        输出描述:
+        1、c == 1时，根据a和b是否在一个团队中输出一行字符串，在一个团队中输出“we are a team”，不在一个团队中输出“we are not a team”。
+        2、c为其他值，或当前行a或b的标号小于1或者大于n时，输出字符串“da pian zi”。
+        3、如果第一行n和m的值超出约定的范围时，输出字符串"NULL"。
+
+        示例1
+        输入
+        5 6
+        1 2 0
+        1 2 1
+        1 5 0
+        2 3 1
+        2 5 1
+        1 3 2
+
+        输出
+        we are a team
+        we are not a team
+        we are a team
+        da pian zi
+
+        说明
+        第2行定义了1和2是一个团队
+        第3行要求进行判定，输出"we are a team"
+        第4行定义了1和5是一个团队，自然2和5也是一个团队
+        第5行要求进行判定，输出"we are not a team"
+        第6行要求进行判定，输出"we are a team"
+        第7行c为其它值，输出"da pian zi"
+        */
+        function WeAreATeam(people,input,num) {
+            let teamList = [];// 存储同一个team
+            let list = [];// 存储需要判断是否同一个团队的队友
+            let lines = input.split(',');
+            for (let i = 0; i < lines.length; i++) {
+                let split = lines[i].split(' ');
+                let a = parseInt(split[0]),b = parseInt(split[1]),c = parseInt(split[2]);
+                if (c == 0) {
+                    let flag = false;// 标识是否与前面的组是相同团队
+                    for (let set of teamList) {
+                        console.log(set);
+                        if (set.includes(a) || set.includes(b)) {
+                            set.push(a);set.push(b);flag = true;break;
+                        }
+                    }
+                    if (!flag) {
+                        let set = [];set.push(a);set.push(b);teamList.push(set);
+                    }
+                } else {
+                    list.push(a + " " + b + " " + c);
+                }
+            }
+            for (let s of list) {
+                let split = s.split(" ");let a = parseInt(split[0]),b = parseInt(split[1]),c = parseInt(split[2]);
+                if (c != 1) {
+                    console.log("da pian zi");
+                } else {
+                let flag = false;
+                    for (let set of teamList) {
+                        if (set.includes(a) && set.includes(b)) {
+                            console.log("we are a team");flag = true;break;
+                        }
+                    }
+                    if (!flag) {
+                        console.log("we are not a team");
+                    }
+                }
+            }
+        }
+        
+        //敏感字段加密
+        //('password__a12345678_timeout_100',1)
+        function fieldsEncryption(input,k) {
+            /*            
+            题目描述
+            【敏感字段加密】给定个由多个命令字组成的命令字符串：
+            1.字符串长度小于等于127字节，只包含大小写字母，数字，下划线和偶数个双引号;
+            2、命令字之间以个或多个下划线——进行分割;
+            3、可以通过两个双引号""来标识包含下划线——的命今字或空命今字(仅包含两个双引号的命令字),双引号不会在命令字内部出现;
+            请对指定索的敏感字段进行加密，替换为******(6个)，并删除命令字前后多余的下划线——。如果无法找到指定索引的命今字,输出字符串ERROR.
+            输入描述:
+            输入为两行,第一行为命令字索引K（从0开始),第一行为命令字符串s.
+
+            输出描述:
+            输出处理后的命令字符串，如果无法找到指定索引的命令字，输出字符串ERROR
+
+            示例1
+            输入
+            1
+            password__a12345678_timeout_100
+
+            输出
+            password_******_timeout_100
+
+            示例2
+            输入
+            2
+            aaa_password_“a12_45678"_timeout__100"”_
+
+            输出
+            aaa_password_******_timeout_100""
+            */
+
+            //let relaceStr = '******';
+            // let splitArr = [];
+            // let pw = '';
+            // let splitStr = input.match(/[^_]+/g);
+            // let indexQ = [];
+            // for (let i = 0; i < input.length; i++) {
+            //     if(input[i]==='"'){
+            //         indexQ.push(i);
+            //     }
+            // }
+            // if (indexQ.length == 0) {
+            //     indexQ.push(input.length);
+            //     indexQ.push(input.length + 1);
+            // }
+            // let left = 0;
+            // for (let i = 0; i < indexQ.length - 1; i++) {
+            //     let le = indexQ[i];
+            //     let ri = indexQ[i + 1];
+
+            //     let sb = '';
+            //     if (le > left) {
+            //         for (let j = left; j < le; j++) {
+            //             if (input[j] != '_') {
+            //                 sb += input[j];
+            //             } else {
+            //                 if (sb.length != 0) {
+            //                     splitArr.push(sb.toString());
+            //                     sb='';
+            //                 }
+            //             }
+            //         }
+            //     }
+
+            //     for (let j = le + 1; j < ri; j++) {
+            //         sb+=input[j];
+            //     }
+            //     splitArr.push(sb.toString());
+            //     sb='';
+
+            //     if (i == indexQ.length - 2 && ri < input.length - 1) {
+            //         for (let j = ri + 1; j < input.length; j++) {
+            //             if (input[j] != '_') {
+            //                 sb+= input[j];
+            //             } else {
+            //                 if (sb.length != 0) {
+            //                     splitArr.push(sb.toString());
+            //                     sb='';
+            //                 }
+            //             }
+            //         }
+            //     }
+            //     left = ri + 1;
+            //     i++;
+            // }
+
+            // let sb = '';
+            // let flag = false;
+            // for (let i = 0; i < splitArr.length; i++) {
+            //     if (i == 0) {
+            //         sb += splitArr[i];
+            //         continue;
+            //     }
+            //     if (i == k) {
+            //         sb +="_******";
+            //         flag = true;
+            //         continue;
+            //     }
+            //     sb += "_" + (""=== splitArr[i] ? "\"\"" : splitArr[i]);
+            // }
+            //console.log(flag ? sb : "ERROR");
+            let relaceStr = '******';
+            let passwords = input.match(/[^_]+/g);
+            let odd = input.match(/(\").*?(\")/g);
+            // for (let i = 0; i < passwords.length; i++) {
+            //     let str='';
+            //     if(passwords[i].indexOf('\"') === 0){
+            //         str += passwords[i];
+            //     }
+            //     const element = array[i];
+                
+            // }
+            //passwords[k] = relaceStr;
+            //let result = passwords.join('_');
+            console.log(odd, passwords);
+
+        }
+        //fieldsEncryption('aaa_password_“a12_45678"_timeout__100""_', 2)
+
+        // 补种未成活胡杨树
+        function plantTree(params) {
+            /*某沙漠新种植N颗胡杨（编号1~N），一个月后，有M颗未能成活。现可补种K颗（只可补种，不可新种），请问怎样补种，可以得到最多的连续胡杨树？
+            输入  N 总种植数量
+            M  未成活数量
+            M个空格分割的数，按编号从小到大排列
+            K 最多可以补种的数量
+            其中 1 <= N < 1000 1 <= M < N 0 <= K <= M
+            实例 输入
+            10
+            3
+            2 4 7
+            1
+            输出
+            6
+            说明 补种第7颗 可得到5，6，7, 8，9，10连续胡杨树
+            */
+        }
+
+        
+        // copyLISP('(mul 3 -7)');//-21
+        // copyLISP('(sub (mul 2 4) (div 9 3))');// 5
+        // copyLISP('(sub (mul 2 4) 2');//6
+        // copyLISP('(add 1 2)');// 3
+        // copyLISP('(div 1 0)');//error
+        //copyLISP('(sub (mul (add 1 2) 4) (div (add 1 2) 3))');//11
+        /* // 仿lisp运算
+        题目描述：
+        LISP 语言唯一的语法就是括号要配对。 形如(OP P1 P2 …)，括号内元素由单个空格分割。 其中第一个
+        元素 OP 为操作符，后续元素均为其参数，参数个数取决于操作符类型 注意：参数 P1, P2 也有可能是另外
+        一个嵌套的(OP P1 P2 …) 当前 OP 类型为 add / sub / mul / div（全小写），分别代表整数的加减乘除法
+        简单起见，所有 OP 参数个数均为 2
+        举例:
+        输入：(mul 3 -7) 输出： -21
+        输入：(add 1 2) 输出：3
+        输入：(sub (mul 2 4) (div 9 3)) 输出：5
+        输入：(div 1 0) 输出：error 题目涉及数字均为整数，可能为负；
+        不考虑 32 位溢出翻转，计算过程中也不会发生 32 位溢出翻转 除零错误时，
+        输出 “error”，除法遇除不尽，向下取整，即 3 / 2 = 1
+        输入描述：
+        输入为长度不超过 512 的字符串，用例保证了无语法错误
+        输出描述：
+        输出计算结果或者“error”
+        示例 1
+        输入：(div 12(sub 45 45))
+        输出：
+        error
+        */
+        function copyLISP(str) {
+            function count2(str) {
+                let stack = str.match(/[\(].[\)]|[a-z]+|\-[0-9]+|[0-9]+/g);
+                let maps = ['add','sub','mul','div'];
+                let idx = 0;
+                let queue = stack.slice();
+                while(queue.length>=3){
+                    let reg = /[0-9]+/;
+                    let curValue = 0;
+                    let op = queue[idx];
+                    if (maps.includes(queue[idx]) && reg.test(queue[idx + 1]) && reg.test(queue[idx + 2])) {
+                        let num1 = parseInt(queue[idx + 1]);
+                        let num2 = parseInt(queue[idx + 2]);
+                        if (op === 'add') curValue = num1 + num2;
+                        if (op === 'sub') curValue = num1 - num2;
+                        if (op === 'mul') curValue = num1 * num2;
+                        if (op === 'div') curValue = num2 !== 0 ? Math.floor(num1 / num2) : 'error';
+                        queue.splice(idx,3, curValue);
+                        idx=0;
+                    }else{
+                        idx ++;
+                    };
+                }
+                return queue;
+            }
+            console.log('res:' + count2(str)); 
+            
+            function count(s) {
+                let str = s.slice(1, s.length - 1);
+                let len = str.length;
+                let op = str.substr(0,3);
+                let spaceIndex = str.indexOf(' ');
+                str = str.slice(spaceIndex + 1);
+                let nums = str.match(/[\(|（].*[\)|）]$/g);
+                let res = ''
+                // console.log(nums);
+                let [num1, num2] = [0, 0]
+                if (nums === null) {
+                    nums= str.split(' ');
+                    [num1,num2] = [parseInt(nums[0]), parseInt(nums[1])];
+                } else {
+                    let subStr = nums[0];
+                    let subNums = [];
+                    if(subStr[0]==="(" && subStr[subStr.length-1] === ")"){
+                        subNums = subStr.split(') (');
+                        [num1, num2] = [parseInt(count(subNums[0] + ')')), parseInt(count('(' + subNums[1]))];
+                    }
+                }
+                if (op === 'add') res = num1 + num2;
+                if (op === 'sub') res = num1 - num2;
+                if (op === 'mul') res = num1 * num2;
+                if (op === 'div') res = num2 !== 0 ? Math.floor(num1 / num2) : 'error';
+                return res;
+            }
+            //console.log('res:' + count(str));
+        }
+
+        /*九宫格按键输入【2022 Q1 Q2 |200分】
+        九宫格按键输入，有英文和数字两个模式，默认是数字模式，数字模式直接输出数字，
+        英文模式连续按同一个按键会依次出现这个按键上的字母，如果输入“/”或者其他字符，则循环中断，输出此时停留的字母。
+
+        数字和字母的对应关系如下，注意0只对应空格：
+        1（,.）2（abc）3（def）
+        4（ghi）5（jkl）6（mno）
+        7（pqrs）8（tuv）9（wxyz）
+        # 0（空格）/
+
+        输入一串按键，要求输出屏幕显示
+        1、#用于切换模式，默认是数字模式，执行#后切换为英文模式；
+        2、/表示延迟，例如在英文模式下，输入22/222，显示为bc，数字模式下/没有效果；
+        3、英文模式下，多次按同一键，例如输入22222，显示为b；
+        */
+        function threeBgTreeGrids(input) {
+                let temp = "";   //上一次的数字按键
+                let sb = ''   //输出字符串
+                let count = 0;  //按键次数
+                let strings = [" ", ",.", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"];
+                let isEn = false;   //英文输入
+            let len = input.length;
+            for (let i = 0; i < len; i++) {
+                let c = input.charAt(i); //本次的按键
+                if (c === "#") {  //中英文切换
+                    isEn = !isEn;
+                    if (temp != "") {  //temp有值，说明有字符需要输出
+                        uotput(temp);
+                        count = 0;  //输出完，count和temp初始化
+                        temp = "";
+                    }
+                    continue;
+                }
+                if (isEn) {//英文输入
+                    if (temp === "") {
+                        if (c === "/") {
+                            continue;
+                        }
+                        temp = c;
+                        count = 1;
+                        if (i == len - 1) {//最后一个
+                            uotput(c);
+                            break;
+                        }
+                    } else if (temp !== c) {//按键数字发生变化，需要输出字符
+                        uotput(temp);
+                        if (c === "/") {
+                            count = 0;
+                            temp = "";
+                        } else {
+                            count = 1;
+                            temp = c;
+                            if (i == len - 1) {//最后一个
+                                uotput(c);
+                                break;
+                            }
+                        }
+                    } else {
+                        count++;
+                        if (i == len - 1) {   //最后一个
+                            uotput(c);
+                        }
+                    }
+                } else {// 数字输入
+                    if (c === "/") {//数字中的/没有意义
+                        continue;
+                    }
+                    sb += c;//数字直接输出
+                }
+            }
+            function uotput(str) {  //输出文字
+                let strIndex = parseInt(str);   //上一次的按键（数字）
+                if (strIndex == 0) {
+                    sb += " "; //0只有空格
+                } else {
+                let strLen = strings[strIndex].length;//数字上的字符长度
+                let index = count % strLen == 0 ? strLen - 1 : count % strLen - 1; //找到数字按钮上的对应字母位置
+                    sb += strings[strIndex].charAt(index);
+                }
+            }
+            console.log(sb);
+        }
+        //#222233  #2222/22  2222/22
+        //threeBgTreeGrids('#222233');
+
+        /*数组二叉树
+        二叉树也可以用数组来存储，给定一个数组，树的根节点的值存储在下标1，对于存储在下标N的节点，它的左子节点和右子节点分别存储在下标2N和2N + 1，并且我们用值 - 1代表一个节点为空。
+        给定一个数组存储的二叉树，试求从根节点到最小的叶子节点的路径，路径由节点的值组成。
+
+        输入描述
+        输入一行为数组的内容，数组的每个元素都是正整数，元素间用空格分隔。
+        注意第一个元素即为根节点的值，即数组的第N个元素对应下标N，下标0在树的表示中没有使用，所以我们省略了。
+        输入的树最多为7层。
+        输出描述
+        输出从根节点到最小叶子节点的路径上，各个节点的值，由空格分隔，用例保证最小叶子节点只有一个。
+
+        示例 1：
+        输入
+        3 5 7 - 1 - 1 2 4
+        1
+        输出
+        3 7 2
+        1
+        说明
+        最小叶子节点的路径为3 7 2
+
+        示例 2：
+        输入
+        5 9 8 - 1 - 1 7 - 1 - 1 - 1 - 1 - 1 6
+        1
+        输出
+        5 8 7 6
+        1
+        说明
+        最小叶子节点的路径为5 8 7 6，注意数组仅存储至最后一个非空节点，故不包含节点“7”右子节点的 - 1
+
+        思路分析：
+        这道题要计算从根节点到最小的叶子节点的路径，首先二叉树找满足条件的子树，会优先想到dfs，递归找左右子树。然后就是叶子节点的判断，叶子节点所有父节点的查找。
+
+        同时，二叉树是用数组表示的，就可以只按照2N和2N + 1来判断左右子树。
+        */
+        function arrayBinaryTree(input) {
+            let arr = input.split(' ').map(v => parseInt(v));
+            let idx = dfs(arr, 0);
+            let result = [];
+            while (idx > 0) {  // 找到最小叶子节点的所有父节点的索引
+                result.push(arr[idx]);
+                idx = (idx - 1) / 2;
+            }
+            result.push(arr[0]);  // 加入根节点
+            result.reverse();// 反转list
+            let resStr = '';
+            for (let j = 0; j < result.length; j++) {
+                if(result[j] === undefined){
+                    result.splice(j,1);
+                }
+            }
+            console.log(result.join(' '), idx);
+            function dfs(res, idx) {  // 返回最小叶子节点对应索引
+                if (isLeaf(res, idx)) {
+                    return idx;
+                } else {
+                    let idx_left = dfs(res, 2 * idx + 1);  // 递归左叶子节点
+                    let idx_right = dfs(res, 2 * idx + 2); // 递归右叶子节点
+                    if (idx_left >= res.length || res[idx_left] == -1) {  // 只有右叶子节点
+                        return idx_right;
+                    } else if (idx_right >= res.length || res[idx_right] == -1) {  // 只有左叶子节点
+                        return idx_left;
+                    } else {  // 左右叶子节点都有，找最小的
+                        return res[idx_left] < res[idx_right] ? idx_left : idx_right;
+                    }
+                }
+            }
+            function isLeaf(res, idx){
+                return (2*idx + 1 >= res.length || res[2 * idx + 1] == -1)
+                    && (2 * idx + 2 >= res.length || res[2 * idx + 2] == -1)
+            }
+        }
+        //arrayBinaryTree('3 5 7 -1 -1 2 4')
+        //arrayBinaryTree('5 9 8 -1 -1 7 -1 -1 -1 -1 -1 6')
+
+
+/*滑动窗口最大和
+题目描述：
+有一个N个整数的数组和一个长度为M的窗口。
+窗口从数组内的第一个数开始滑动，直到窗口不能滑动为止。
+每次滑动产生一个窗口 和窗口内所有数的和。
+求窗口滑动产生的所有窗口和的最大值。
+
+输入描述：
+第一行输入一个正整数N，表示整数个数 0 < N < 100000。
+第二行输入N个整数，整数取值范围[-100, 100]。
+第三行输入正整数M，M代表窗口的大小，M <= 100000 并 <= N。
+
+输出描述：
+窗口滑动产生所有窗口和的最大值
+示例:
+
+输入：
+6
+12 10 20 30 15 23
+3
+输出：
+68
+*/
+function windowMax(n, input, m) {
+    let arr = input.split(' ');
+        let maxSum = 0;
+        for (let i = 0; i < m; i++) {
+            maxSum += parseInt(arr[i]);
+        }
+        for (let i = m; i < arr.length; i++) {
+            let maxSub = maxSum - parseInt(arr[i - m]) + parseInt(arr[i]);
+            maxSum = Math.max(maxSum, maxSub);
+        }
+        console.log(maxSum);
+    }
+// windowMax(6,'12 10 20 30 15 23',3);
+    
+
+    function sortNum(arr) {
+            let sortArr = arr.slice().sort((a,b) => a-b);
+            let res = [];
+            let maps = new Map();
+            for (let i = 0; i < arr.length; i++) {
+                let sameArr = [];
+                for (let j = 0; j < sortArr.length; j++) {
+                    if(arr[i]=== sortArr[j]){
+                        if (maps.has(arr[i])) {
+                            maps.set(arr[i], maps.get(arr[i]));
+                        } else {
+                            maps.set(arr[i], j+1);
+                        }
+                    }
+                }
+            }
+            res = maps.forEach(t => t.value);
+            console.log(res);
+            return res
+        }
+        // 最长公共子序列
+    function longestQueue(str1, str2) {
+        let dp = Array.from(Array(str1.length)).map(()=> Array(str2.length).fill(0));
+        dp[0][0] = 0;
+        for (let i = 1; i < str1.length; i++) {
+            for (let j = 1; j < str2.length; j++) {
+                if (str1[i] === str2[j]) {
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+                    // maps.set(dp[i][j].length, dp[i][j]);
+                } else {
+                    dp[i][j] = Math.max(dp[i - 1][j], dp[i][j-1]);
+                }
+            }
+        }
+        console.log(dp[str1.length-1][str2.length-1]);
+        return dp[str1.length - 1][str2.length - 1]
+    }
+    //longestQueue('abcdefghijklmnop', 'abcsafjklmnopqrstuvw');
+
+    // 最长公共子串
+    function longestStr(str1,str2) {
+        let dp= Array.from(Array(str1.length)).map(t=>Array(str2.length).fill(''));
+        let maps = new Map();
+        let res = '';
+        dp[0][0]= '';
+        for(let i = 1;i<str1.length;i++ ){
+            for (let j = 1; j < str2.length; j++) {
+                if(str1[i]===str2[j]){
+                    dp[i][j]= dp[i-1][j-1] + str1[i];
+                    res = dp[i][j];
+                    maps.set(dp[i][j].length, dp[i][j]);
+                }else{
+                    dp[i][j] = '';
+                }  
+            }
+        }
+        let vals = maps.values();
+        console.log(res, maps, maps.get(maps.size) );
+        // return maps
+    }
+    // longestStr('abcdefghijklmnop','abcsafjklmnopqrstuvw');
+
+    
+    //快速排序
+    function quickSort(arr){
+        if(arr.length <= 1) return arr;
+        let mid = Math.floor(arr.length/2);
+        let pivot = arr.splice(mid,1)[0];
+        let [left,right] = [[],[]];
+        for (let i = 0; i < arr.length; i++) {
+            if(arr[i] < pivot){
+                left.push(arr[i]);
+            }else{
+                right.push(arr[i]);
+            }
+        }
+        return quickSort(left).concat([pivot],quickSort(right));
+    }
+    // console.log(quickSort([29, 10, 14, 37, 4]));
+
+    //最少交换次数
+    function minChange(arr,m) {
+        let n = arr.length;
+        let orderUp = arr.slice().sort((a,b) => a - b);
+        let orderDown = arr.slice().sort((a, b) => b-a);
+        let count1 = counter(arr, orderUp,true);
+        let count2 = counter(arr, orderDown,false);
+        function counter(arr,orderArr,flag) {
+            let count=0;
+            let newArr = arr.slice();
+            for (let j = 0; j < n; j++) {
+                if (orderArr[j] != newArr[j]) {
+                    for (let k = j; k < n; k++) {
+                        if (newArr[k] == orderArr[j] && (flag ? orderArr[j] < m : orderArr[j] > m)) {
+                            // console.log(k, j, orderArr[j]);
+                            // let temp = newArr[k];
+                            // newArr[k] = newArr[j];
+                            // newArr[j] = temp;
+                            [newArr[k], newArr[j]]=[newArr[j],newArr[k]];
+                            count++;
+                            break;
+                        }
+                    }
+                }
+            }
+            return count;
+        }
+        console.log(Math.min(count1, count2));
+    }
+    //minChange([1, 3, 1, 4, 0],2);
+    function minChange2(arr, k) {
+        let n = 0;
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] < k) n++;
+        }
+        let minSweap = n;
+        let weap = 0;
+        for (let j = 0; j < n; j++) {
+            if(arr[j] > k) weap++; 
+        }
+        for (let i = n; i < arr.length ; i++) {
+            if(arr[i - n] >= k && arr[i] < k){
+                weap--
+            }
+            if (arr[i - n] < k && arr[i] >= k) {
+                weap++
+            }  
+            minSweap = Math.min(minSweap, weap);
+        }
+        console.log(minSweap);
+        return minSweap 
+    }
+    // minChange2([1, 3, 1, 4, 0], 2);
+
+    /*二叉树遍历:后序遍历
+      题目描述
+      给定一棵二叉树的前序遍历和中序遍历，求其后序遍历
+  
+      输入
+      两个字符串，其长度n均小于等于26
+      第一行为前序遍历，第二行为中序遍历
+      二叉树中的结点名称以大写字母表示：A，B，C….最多26个结点
+  
+      输出
+      输入样例可能有多组，对于每组测试样例
+      输出一行，为后序遍历的字符串
+  
+      样例输入
+      ABC
+      BAC
+      FDXEAG
+      XDEFAG
+  
+      样例输出
+      BCA
+      XEDGAF
+  
+      【分析】由先序遍历和中序遍历可确定唯一的二叉树，然后再对其进行后序遍历即可
+      */
+    function binaryTree(input1, input2) {
+        let [mlr, lmr] = [input1.split(""), input2.split("")];
+        function lrm(node, arr) {
+            if (node.left) {
+                lrm(node.left, arr);
+            }
+            if (node.right) {
+                lrm(node.right, arr);
+            }
+            arr.push(node.val);
+        }
+        function createNode(mlr, lmr) {
+            if (mlr.length === 0) return null;
+            if (lmr.length === 0) return null;
+            let val = mlr.shift();
+            let index = lmr.indexOf(val);
+            let left = lmr.slice(0, index);
+            let right = lmr.slice(index + 1);
+            function Node() {
+                this.val = val;
+                this.left = createNode(mlr, left);
+                this.right = createNode(mlr, right);
+            }
+            let node = new Node();
+            return node;
+        }
+
+        let root = createNode(mlr, lmr);
+        let arr = [];
+        lrm(root, arr);
+        console.log(arr.join(""));
+    }
+    // binaryTree("FDXEAG", "XDEFAG");
+
+
+
+        /*喊7的次数重排  | 分值：200
+        题目描述
+        喊7是一个传统的聚会游戏，N个人围成一圈，按顺时针从1到N编号。
+        编号为1的人从1开始喊数，下一个人喊的数字为上一个人的数字加1，但是当数字是7的倍数或者数字本身含有7的话，要喊"过"。
+        现给定一个长度为N的数组，存储了打乱顺序的每个人喊"过"的次数，请把它还原成正确的顺序，即数组的第i个元素存储编号i的人喊"过"的次数。
+       
+        输入
+        输入为一行，为空格分隔的喊"过"的次数
+
+        样例输入
+        0 1 0
+
+        样例输出
+        1 0 0
+
+        说明
+        一共只有一次喊"过"，那只会发生在需要喊 7 时，按顺序，编号为 1 的人会遇到 7 ，故输出 1 0 0 。
+        注意，结束时的K不一定是 7 ，也可以是 8、9 等，喊过的次数都是 1 0 0 。
+        */
+        function repeatSort(str) {
+            const strArr = str.split(" ");
+            let num = 0;// 得到喊7的总次数
+            for (const x of strArr) {
+                num += parseInt(x, 10);
+            }
+            const len = strArr.length
+            const arr = new Array(len).fill(0);// 初始化数组：记录每个人喊7的次数
+            let [index, count] = [1, 0]; // index：当前该喊的人 count：当前喊七的次数
+            while (count < num) {
+                if ((index.toString(10).indexOf('7') !== -1) || index % 7 === 0) {
+                    let i = (index % len) - 1;// 取余：找到喊当前数的是第一个人
+                    arr[i]++;
+                    count++;
+                }
+                index++
+            }
+            console.log(arr.join(" "));
+        }
+        // repeatSort('0 1 0');
+
+        /* 最长子序列长度:书籍叠放问题  | 分值：200
+        题目描述
+        假设书本的叠放有这样的规则，当A书的长度和宽度都大于B书时，可以将其B书置于A的上方，堆叠摆放，
+        请设计一个程序，根据输入的书本长宽，计算最多可以堆叠摆放多少本书？
+
+        输入
+        [[16, 15], [13, 12], [15, 14]]
+
+        输出
+        3
+
+        说明
+        这里代表有3本书，第1本长宽分别为16和15，第2本长宽为13和12，第3本长宽为15和14，
+        它们可以按照[13, 12], [15, 14], [16, 15] 的顺序堆叠，所以输出3
+        */
+        function heapBooks(str) {
+            const arr = JSON.parse(str);// 转为数组
+            const len = arr.length;
+            const dp = new Array(len).fill(1);// 默认为1即每个序列本身就是一个子序列，长度为1
+            arr.sort((a, b) => {// 对输入的数组按照长度、宽度的大小进行排序
+                if (a[0] !== b[0]) {
+                    return a[0] - b[0];
+                } else {
+                    return a[1] - b[1];
+                }
+            })
+            let res = 1// 结果，初始为1，即至少可以放一本书
+            for (let i = 1; i < len; i++) { // 从第2本书向前找，看看加上它能不能增加长度
+                const cur = arr[i]// 要新加的书的长度和宽度
+                for (let j = 0; j < i; j++) {
+                    const pre = arr[j]// 要比较的书的长度和宽度
+                    if (cur[0] > pre[0] && cur[1] > pre[1]) {
+                        // 新加的书的长宽均大于当前书，说明这本书可以加在当前书的递增序列之后
+                        // 判断此时的递增子序列最大值
+                        dp[i] = Math.max(dp[i], dp[j] + 1)
+                    }
+                    
+                    res = Math.max(res, dp[i])// 更新最大值结果
+                }
+            }
+            console.log(res);
+        }
+        //heapBooks("[[16,15], [16, 14], [13, 12], [15, 14]]");
+
+        /*叠积木 | 分值：200
+        题目描述
+        积木宽高相等，长度不等，每层只能放一个或拼接多个积木，每层长度相等，求最大层数，最少2层。
+        输入
+        给定积木的长度，以空格分隔，例如: 3 6 6 3。
+        输出
+        如果可以搭建，返回最大层数，如果不可以返回 - 1。
+
+        样例输入
+        3 6 6 3
+        样例输出
+        3
+
+        样例输入
+        3 5
+        样例输出
+        - 1
+
+        【分析】
+        设所有积木长度总和为 sum ，若可以搭建为 m 层，每层积木长度为 n ，则必有 sum = mn ；设积木中长度最大值为 max ，则必有 n >= max
+        所以本题只需求出积木总长度 sum ，并找出其所有大于 max 小于 sum 的因数，分别判断以此为每层长度能否成功搭建，如果可以，记录层数，最终找到最大的层数
+                    在找每一层所要用的积木时，使用贪心策略，从大的积木开始判断
+
+        【实现】
+        */
+        function heapWoods(str) {
+            function judge(width) {// 判断每层为当前长度时能否拼成
+                const temp = [...arr];// 临时用于遍历的数组
+                let count = 0;// 层数
+                for (let i = 0; i < len; i++) {
+                    if (temp[i] === 0) continue;// 当前积木已被使用，跳过
+                    if ((i === len - 1) && (temp[i] !== width)) return -1;//已找到最后一个，无法刚好拼成，返回-1，表示该长度不行}
+                    let sum = temp[i];// 当前层已拼的积木总长度
+                    temp[i] = 0;// 将当前积木置为0，表示已经使用
+                    if (sum === width) {
+                        count++;// 刚好铺满该层，层数加一，向后继续
+                        continue;
+                    } else {
+                        for (let j = i + 1; j < len; j++) {// 没有铺满，继续向后找
+                            if (temp[j] === 0) continue; // 积木已被使用，向后继续
+                            if ((j === len - 1) && (temp[j] + sum !== width)) return -1;// 找到最后一个了，但不能刚好拼成，返回-1
+                            if (temp[j] + sum > width) {
+                                continue;// 当前积木超出剩余长度，不能使用
+                            } else if (temp[j] + sum === width) {
+                                temp[j] = 0;// 加上该积木刚好铺满，以 i 位置打头的这一层已拼好，继续拼下一层
+                                count++;
+                                break;
+                            } else {// 加上该积木还不够
+                                sum += temp[j];
+                                temp[j] = 0;
+                                continue;
+                            }
+                        }
+                    }
+                }
+                return count;// 可以以该长度拼成，返回此时的层数
+            }
+            const arr = str.split(" ").map(x => parseInt(x, 10)).sort((a, b) => b - a);
+            const len = arr.length;
+            const max = arr[0];// 最大值
+            let num = 0;// 积木长度总和
+            for (const x of arr) {
+                num += x;
+            }
+            let res = -1;// 最终结果：初始为-1
+            const range = Math.floor(num / 2);// 找因数：最少两层，所以最多找到 num/2
+            for (let i = max; i <= range; i++) {
+                if (num % i === 0) {
+                    res = judge(i);// i 为 num 的因数，判断每层长度为 i 能否拼成
+                }
+                if (res !== -1) {
+                    break;// 要找最大层数，所以从小的长度向大的找，当找到时，不需要向后继续，直接结束
+                }
+            }
+            console.log(res);
+        }
+        // heapWoods("3 6 6 3");
+
+    /* 找终点  | 分值：100
+    题目描述
+    给定一个正整数数组，最大为100个成员，从第一个成员开始，走到数组最后一个成员最少的步骤数。
+    第一步必须从第一元素开始，1 <= 步长 < len / 2, 第二步开始以所在成员的数字走相应的步数，
+    如果目标不可达返回 - 1，只输出最少的步骤数。
+    样例输入
+    7 5 9 4 2 6 8 3 5 4 3 9
+    样例输出
+    2
+
+    说明
+    第一步走2步（2 < len / 2），走到9，第二步走9步到底最后一个成员，最少步数两步
+    【分析】
+    第一步可以走[1, len / 2) 的任意一种，遍历所有情况，找到符合要求的最小步骤
+
+    【实现】
+    原文链接：https://blog.csdn.net/m0_56229413/article/details/117744124
+    */
+    function findEnding(inputStr) {
+        const arr = inputStr.split(" ").map((x) => parseInt(x, 10))
+        const len = arr.length;                   // 记录最小步数
+        let res = Infinity;                       // 记录最小步数
+        const range = Math.floor(len / 2);        //第一步最多只能走 len/2
+        for (let i = 1; i < range; i++) {
+            let count = 1;                        // 走的步数
+            let index = i;                        // 当前索引
+            while (1) {
+                index += arr[index];              //向后走 arr[index] 步
+                count++;                          // 步数加1
+                if (index > (len - 1)) {
+                    break;                        // 当走的长度超出了范围，说明这种情况不符合要求
+                } else if (index === (len - 1)) {
+                    res = Math.min(res, count);   // 刚好走到最后一个成员，更新最小步数
+                    break;
+                }
+            }
+        }
+        res === Infinity ? console.log(-1) : console.log(res);//没有符合要求的情况，输出-1
+    }
+    // findEnding("7 5 9 4 2 6 8 3 5 4 3 9");
+
+        // ?欢乐的周末 | 分值：200
+        function happyWeekEnd(params) {
+            /*
+            题目描述
+            小华和小为是很要好的朋友，他们约定周末一起吃饭。
+            通过手机交流，他们在地图上选择了多个聚餐地点（由于自然地形等原因，部分聚餐地点不可达），求小华和小为都能到达的聚餐地点有多少个？
+            输入描述
+
+            第一行输入m和n，m代表地图的长度，n代表地图的宽度。
+            第二行开始具体输入地图信息，地图信息包含：
+            0 为通畅的道路
+            1 为障碍物（且仅1为障碍物）
+            2 为小华或者小为，地图中必定有且仅有2个 （非障碍物）
+            3 为被选中的聚餐地点（非障碍物）
+
+            输出描述
+            可以被两方都到达的聚餐地点数量，行末无空格。
+
+            示例1  输入输出示例仅供调试，后台判题数据一般不包含示例
+
+            输入
+
+            4 4
+            2 1 0 3
+            0 1 2 1
+            0 3 0 0
+            0 0 0 0
+
+            输出
+            2
+
+            说明
+            第一行输入地图的长宽为3和4。
+            第二行开始为具体的地图，其中：3代表小华和小明选择的聚餐地点；2代表小华或者小明（确保有2个）；0代表可以通行的位置；1代表不可以通行的位置。
+            此时两者能都能到达的聚餐位置有2处。
+
+            示例2  输入输出示例仅供调试，后台判题数据一般不包含示例
+
+            输入
+
+            4 4
+            2 1 2 3
+            0 1 0 0
+            0 1 0 0
+            0 1 0 0
+
+            输出
+            0
+
+            说明
+
+            第一行输入地图的长宽为4和4。
+            第二行开始为具体的地图，其中：3代表小华和小明选择的聚餐地点；2代表小华或者小明（确保有2个）；0代表可以通行的位置；1代表不可以通行的位置。
+            由于图中小华和小为之间有个阻隔，此时，没有两人都能到达的聚餐地址，故而返回0。
+
+            备注:
+            地图的长宽为m和n，其中：
+            4 <= m <= 100
+            4 <= n <= 100
+            聚餐的地点数量为 k，则1 < k <= 100
+
+            https://blog.csdn.net/cxh21627/article/details/125375668?spm=1001.2101.3001.6650.1&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-125375668-blog-124403459.pc_relevant_multi_platform_whitelistv1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1-125375668-blog-124403459.pc_relevant_multi_platform_whitelistv1&utm_relevant_index=2
+            */
+
+        }
+
+    /*数字涂色【2022 Q1 Q2 |100分】
+           题目描述
+           疫情过后，希望小学终于又重新开学了，三年二班开学第一天的任务是将后面的黑板报重新制作。
+           黑板上已经写了N个正整数，同学们需要给每个数分别上一种颜色。
+           为了让黑板报即没关又有学习意义，老师要求同种颜色的所有数都可以被这种颜色中最小的那个数整除。
+           现在请你帮帮小朋友们，算算最少需要多少种颜色才能给这N个数进行上色。
+     
+           输入描述：
+           第一行有一个正整数N，其中1 <= N <= 100。
+     
+           第二行有N个int型数（保证输入数据在[1, 100]范围中），表示黑板上各个正整数的值。
+     
+           输出描述：
+           输入只有一个整数，为最少需要的颜色种数。
+           输入：
+           3
+           2 4 6
+     
+           输出：
+           1
+     
+           说明：
+           所有数都能被2整除
+           */
+    function numColor(n, input) {
+        let arr = input.split(' ').sort();// 先对数组进行排序，方便遍历
+        let count = 0;// 记录最少需要的颜色数量
+        let res = Array(n).fill(0);
+        for (let i = 0; i < n; i++) {
+            if (res[i] > 0) {
+                continue;
+            } else {
+                for (let j = i; j < n; j++) {
+                    if ((arr[j] % arr[i]) == 0) {
+                        res[j]++;
+                    }
+                }
+                count++;
+            }
+        }
+        console.log(count);
+    }
+       //numColor(3,'2 4 6')
+
+        // 窗口滑动和最大值
+        function maxSlidingWindow(nums, k) {
+            const n = nums.length;
+            const q = [];
+            for (let i = 0; i < k; i++) {
+                while (q.length && nums[i] >= nums[q[q.length - 1]]) {
+                    q.pop();
+                }
+                q.push(i);
+            }
+            const ans = [nums[q[0]]];
+            for (let i = k; i < n; i++) {
+                while (q.length && nums[i] >= nums[q[q.length - 1]]) {
+                    q.pop();
+                }
+                q.push(i);
+                while (q[0] <= i - k) {
+                    q.shift();
+                }
+                ans.push(nums[q[0]]);
+            }
+            return ans;
+        };
+
+        /*导师请吃火锅【2022 Q1 Q2 | 200分】
+        题目描述
+        入职后，导师会请你吃饭，你选择了火锅。
+        火锅里会在不同时间下很多菜。
+        不同食材要煮不同的时间，才能变得刚好合适。
+        你希望吃到最多的刚好合适的菜，但你的手速不够快，用m代表手速，
+        每次下手捞菜后至少要过m庙才能在捞（每次只能捞一个）。
+        那么用最合理的策略，最多能吃到多少刚好合适的菜？
+
+        输入描述：
+        第一行两个整数n，m，其中n代表往锅里下的菜的个数，m代表手速。
+        接下来有n行，每行有两个数x，y代表第x秒下的菜过y秒才能变得刚好合适。
+        （1 < n, m < 1000）
+        （1 < x, y < 1000）
+
+        输出描述：
+        输出一个整数代表用最合理的策略，最多能吃到刚好合适的菜的数量
+
+        输入：
+        2 1
+        1 2
+        2 1
+
+        输出：
+        1
+        */
+        //hotPot('2 1,1 2,2 1');
+        function hotPot(input) {
+            let lines = input.split(',')
+            let n = parseInt(lines[0].split(' ')[0]);
+			let m = parseInt(lines[0].split(' ')[1]);
+            let x = Array(n).fill(0),y = Array(n).fill(0);
+            let arrLine = lines.slice(1);
+            for (let i = 0; i < n; i++) {
+                let split = arrLine[i].split(' ')
+                x[i] = parseInt(split[0]);
+                y[i] = parseInt(split[1]);
+            }
+            let arrTime = Array(n).fill(0);// 设置一个数组，存放每道菜可以吃到的时间。
+            for (let i = 0; i < n; i++) {
+                arrTime[i] = x[i] + y[i];
+            }
+            arrTime.sort();// 对数组进行从小到大进行排序，这样便于后面比较计算
+            // 新建一个数组，和数组arrTime对应，用于记录每道菜是否可以吃到，可以吃到标记加1.
+            let arrCount = Array(n).fill(0);
+            
+			let next = 0;
+            arrCount[0] = 1;
+            for (let i = 1; i < n; i++) {
+                if (arrTime[i] >= (arrTime[next] + m)) {
+                    arrCount[i] = 1;
+                    next = i;
+                }
+            }
+			let count = 0;
+            for (let i = 0; i < n; i++) {
+                if (arrCount[i] > 0) {
+                    count++;
+                }
+            }
+            console.log(arrLine,arrTime,arrCount,count);   
+        }
+
+        // 希尔排序
+        function shellSort(arr, n) {
+            let i,j,inc,key;
+            for(inc = Math.floor(n / 2) ; inc > 0; inc = Math.floor(inc / 2)){
+                for(i = inc; i < n; i++){
+                    key = arr[i];
+                    for(j = i; j>= inc && key < arr[j- inc]; j-=inc){
+                        arr[j] = arr[j-inc];
+                    }
+                    arr[j] = key;
+                }
+                console.log(arr,n);
+            };
+        }
+        //shellSort([15, 5, 2, 7, 12, 6, 1, 4, 3, 9, 8, 10],12)
+
+        /*补种未成活胡杨树
+        某沙漠新种植N颗胡杨（编号1~N），一个月后，有M颗未能成活。现可补种K颗（只可补种，不可新种），
+        请问怎样补种，可以得到最多的连续胡杨树？
+        输入  
+
+            N  总种植数量
+            M  未成活数量
+            M 个空格分割的数，按编号从小到大排列
+            K  最多可以补种的数量
+            其中 1<=N<1000 1<=M<N 0<=K<=M
+
+        示例1:
+        输入：
+        10
+        3
+        2 4 7
+        1
+        输出：6
+        题解/说明：补种第7颗，可得到5，6，7，8，9，10连续胡杨树
+        */
+        //plantTree('10\n3\n2 4 7\n1');
+        function plantTree(input) {
+           let list = input.split('\n');
+           let n = parseInt(list[0]);
+           let m = parseInt(list[1]);
+           let arr = list[2].split(' ').map(t=>parseInt(t));
+           let k = parseInt(list[3]);
+           let res = 0;
+           for (let i = 0; i < m + 1 - k; i++) {
+                let start = arr[i-1] + 1 || 1;
+                let end = arr[i + k]-1 || n;
+                res = Math.max(end-start+1,res)
+           }
+           console.log(n,m,arr,k,res);
+           return res;
+        }
+        //plantTree2('10\n3\n2 4 7\n1');
+        function plantTree2(input) {
+            let list = input.split('\n');
+            let n = parseInt(list[0]);
+            let m = parseInt(list[1]);
+            let arr = list[2].split(' ').map(t => parseInt(t));
+            let k = parseInt(list[3]);
+            let allTree = [];
+            for (let i = 1; i <= n; i++) {
+                allTree.push(i);
+            }
+            let [left,right,maxLen]=[0,0,0];
+            while (right<n) {
+                let sliceArr = allTree.slice(left,right+1);
+                let deadTimes = 0;
+                for (let j = 0; j < arr.length; j++) {
+                    if (sliceArr.find(t=>t===arr[j])) {
+                        deadTimes++;
+                    }
+                }
+                if (deadTimes > k) {
+                    left++
+                }else{
+                    right++;
+                    maxLen = Math.max(maxLen,sliceArr.length);
+                }
+            }
+            console.log(allTree, maxLen);
+            return maxLen;
+        }
+
+        /*勾股数元组
+        题目描述
+        给定正整数N， 计算出小于或等于N的素勾股数个数
+        关于素勾股数，简单来说，就是 a 2 + b 2 = c 2 且 a、b、c 互质，则称（a，b，c）为一组素勾股数
+
+        【分析】
+        可以通过三层循环，找到所有符合要求的数，得到其个数，不过这样当 N 大些的时候效率就比较低；
+        了解（素勾股数、毕达哥拉斯三元组等知识），可得到关于素勾股数的一个结论：
+        对于一组素勾股数（a，b，c），存在 m、n 使得 a = m 2 - n 2，b = 2mn， c = m 2 + n 2，
+        且 gcd(m,n) = 1 由此可将三层循环化为两层循环
+        // pythagoreanNumber('1000')
+        */
+        function pythagoreanNumber(input) {
+            const num = parseInt(input);
+            let res = 0
+            // c=m^2 + n^2，又m、n都大于0，所以它们一定不超过c的开方
+            const len = Math.ceil(Math.sqrt(input))
+            for (let i = 1; i < len; i++) {
+                for (let j = i + 1; j < len; j++) {
+                    // m、n不互质，跳过
+                    if (isCoprime(i, j) !== 1) continue
+
+                    let a = Math.pow(j, 2) - Math.pow(i, 2)
+                    let b = 2 * i * j
+                    let c = Math.pow(j, 2) + Math.pow(i, 2)
+                    if (c <= input) {
+                        // 当前勾股数数不超过给定值
+                        if ((isCoprime(a, b) === 1) && (isCoprime(a, c) === 1) && (isCoprime(b, c) === 1)) {
+                            // 勾股数两两互质
+                            res++
+                        }
+                    }
+                }
+            }
+            // 判断两个数是否互质：最大公因数是否为1
+            function isCoprime(x, y) {
+                // 不必考虑 x、y 的大小 第一次递归之后大的总会在前面
+                if (y === 0) {
+                    return x
+                } else {
+                    return isCoprime(y, x % y)
+                }
+            }
+            // 输出
+            console.log(res);
+        }
+
+        /*分糖果I
+        小明从糖果盒中随意抓一把糖果
+        每次小明会取出一半的糖果分给同学们
+        当糖果不能平均分配时
+        小明可以从糖果盒中(假设盒中糖果足够)取出一个或放回一个糖果
+        小明至少需要多少次(取出放回和平均分配均记一次)能将手中糖果分至只剩一颗
+
+        输入描述：
+        抓取糖果数(小于1000000)：15
+        输出描述：
+        最少分至一颗糖果的次数：5
+
+        示例1：
+        输入
+            15
+        输出
+            5
+        备注
+        解释：(1) 15+1=16;
+            (2) 16/2=8;
+            (3) 8/2=4;
+            (4) 4/2=2;
+            (5) 2/2=1;
+        */
+        function getMinData(n) {
+            let count = 0;
+            for (let i = n; i != 1; i /= 2, count++) {
+                if (i == 3) {
+                    count += 2;
+                    break;
+                }
+                if (i % 2 != 0) {
+                    if ((i + 1) / 2 % 2 == 0)
+                        i++;
+                    else
+                        i--;
+                    count++;
+                }
+            }
+            console.log(count);
+        }
+
+
+
+        /* 统计射击成绩 | 分值：100
+        给定一个射击比赛成绩单，包含多个选手若干次射击的成绩分数，请对每个选手按其最高三个分数之和进行降序排名，输出降序排名后的选手id序列。
+
+        题目解析：
+        给一个数字表示射击的次数，然后给几个选手进行（乱序）射击，生成对应的成绩！
+        条件如下：
+        一个选手可以有多个射击成绩的分数，且次序不固定
+        如果一个选手成绩少于3个，则认为选手的所有成绩无效，排名忽略该选手
+        如果选手的成绩之和相等，则相等的选手按照其id降序排列
+
+        输入描述：
+        输入第一行，一个整数N，表示该场比赛总共进行了N次射击，产生N个成绩分数（2 <= N <= 100）
+        输入第二行，一个长度为N整数序列，表示参与每次射击的选手id（0 <= id <= 99）
+        输入第三行，一个长度为N整数序列，表示参与每次射击选手对应的成绩（0 <= 成绩 <= 100）
+
+        输出描述：
+        符合题设条件的降序排名后的选手ID序列
+
+        示例
+        输入：
+        13
+        3, 3, 7, 4, 4, 4, 4, 7, 7, 3, 5, 5, 5
+        53, 80, 68, 24, 39, 76, 66, 16, 100, 55, 53, 80, 55
+
+        输出：5, 3, 7, 4
+        */
+        function records(idArr,orderArr){
+            let peopleArr = [...new Set(idArr)], result = {};
+            for (let i of peopleArr) {
+                result[i] = [];
+            }
+            for (let i = 0; i < idArr.length; i++) {
+                result[idArr[i]].push(orderArr[i]);
+            }
+            let goldObj = [];
+            Object.keys(result).map(e => {
+                if (result[e].length < 3) {
+                    delete result[e];
+                    return;
+                }
+                let arr = result[e].sort((a, b) => b - a).splice(0, 3);let sum = 0;
+                for (let i of arr) {
+                    sum += i;
+                }
+                goldObj.push({
+                    name: e,
+                    sum: sum
+                })
+            })
+            goldObj.sort((a, b) => {
+                if (b.sum > a.sum) {
+                    return b.sum - a.sum
+                } else {
+                    return b.name - a.name
+                }
+            })
+            let resultStr = ''
+            for (let i of goldObj) {
+                resultStr += i.name
+            }
+            resultStr.split('').join(',');
+            console.log(resultStr, peopleArr, goldObj);
+        }
+        // records([3, 3, 7, 4, 4, 4, 4, 7, 7, 3, 5, 5, 5], [53, 80, 68, 24, 39, 76, 66, 16, 100, 55, 53, 80, 55]);
+
+        /* 最远足迹 | 分值：100
+        某探险队负责对地下洞穴进行探险。 探险队成员在进行探险任务时，随身携带的记录器会不定期地记录自身的坐标，但在记录的间隙中也会记录其他数据。
+        探索工作结束后，探险队需要获取到某成员在探险过程中相对于探险队总部的最远的足迹位置。
+        仪器记录坐标时，坐标的数据格式为(x, y)，如(1, 2)、(100, 200)，其中0 < x < 1000，0 < y < 1000。同时存在非法坐标，如(01, 1)、(1, 01)，(0, 100)属于非法坐标。
+        设定探险队总部的坐标为(0, 0)，某位置相对总部的距离为：x * x + y * y。
+        若两个座标的相对总部的距离相同，则第一次到达的坐标为最远的足迹。
+        若记录仪中的坐标都不合法，输出总部坐标（0, 0）。 备注：不需要考虑双层括号嵌套的情况，比如sfsdfsd((1, 2))。
+
+        输入描述
+        字符串，表示记录仪中的数据。 如：ferga13fdsf3(100, 200)f2r3rfasf(300, 400)
+
+        输出描述
+        字符串，表示最远足迹到达的坐标 如：(300, 400)
+        */
+        function MaxSteps(str) {
+            let strArr = str.split('');
+            let max = 0;
+            let ans = "(0,0)";
+
+            let left = [];
+            let right = [];
+            for (let i = 0; i < strArr.length; i++) {
+                if (strArr[i] == '(') {
+                    left.push(i);
+                }
+                if (strArr[i] == ')') {
+                    right.push(i);
+                }
+            }
+
+            for (let i = 0; i < left.length; i++) {
+                let strs = str.substring(left[i] + 1, right[i]).split(",");
+                if (strs[0].charAt(0) != '0' && strs[1].charAt(0) != '0') {
+                    let x = parseInt(strs[0]),
+                        y = parseInt(strs[1]),
+                        distance = x * x + y * y;
+                    if (x < 1000 && y < 1000 && distance > max) {
+                        max = distance;
+
+                        ans = '('+ x + ',' + y + ')';
+                    }
+                }
+            }
+            console.log(ans);
+        }
+        // MaxSteps('ferga13fdsf3(100, 200)f2r3rfasf(300, 400)');
+
+        /*VLAN资源池 | 分值：100
+        VLAN是一种对局域网设备进行逻辑划分的技术，为了标识不同的VLAN，引入VLAN ID(1-4094之间的整数)的概念。
+        定义一个VLAN ID的资源池(下称VLAN资源池)，资源池中连续的VLAN用开始VLAN-结束VLAN表示，不连续的用单个整数表示，所有的VLAN用英文逗号连接起来。
+        现在有一个VLAN资源池，业务需要从资源池中申请一个VLAN，需要你输出从VLAN资源池中移除申请的VLAN后的资源池
+
+        输入描述
+        第一行为字符串格式的VLAN资源池，第二行为业务要申请的VLAN，VLAN的取值范围为[1,4094]之间的整数
+
+        输出描述
+        从输入VLAN资源池中移除申请的VLAN后字符串格式的VLAN资源池，输出要求满足题目描述中的格式，并且按照VLAN从小到大升序输出。
+        如果申请的VLAN不在原VLAN资源池内，输出原VLAN资源池升序排序后的字符串即可
+
+        示例1
+        输入
+        1-5
+        2
+
+        输出:1,3-5
+
+        示例2
+        输入
+        20-21,15,18,30,5-10
+        15
+        输出:5-10,18,20-21,30
+        */
+        function VlanResources(resources,vlanNums){
+            let vlans = resources.split(",");
+            let vSet = new Set();
+            for (vlan of vlans) {
+                if (vlan.includes("-")) {
+                    let nums = vlan.split("-"),left = parseInt(nums[0]),right = parseInt(nums[1]);
+                    for (let i = left; i <= right; i++) {
+                        vSet.add(i);
+                    }
+                } else {
+                    vSet.add(parseInt(vlan));
+                }
+            }
+            vSet.delete(vlanNums);// 移出已经申请的
+            let list = [...new Set(vSet)];
+            list.sort((a,b)=>a-b);
+            let sb = [],left = list[0],right = left;
+            for(let i = 1; i < list.length; i++) {
+                let value = list[i];
+                if (value == right + 1) {
+                    right = value;
+                } else {
+                    build(sb, left, right);// 添加
+                    left = right = value;
+                }
+            }
+            build(sb, left, right);
+            function build(sb, left, right) {
+                if (left == right) {
+                    sb.push(right);
+                } else {
+                    sb.push(left + '-' + right);
+                }
+            }
+            console.log(sb.join(','));// 移除最后一个逗号
+        }
+        // VlanResources('20-21,15,18,30,5-10', 19);
+
+        
+        /*转骰子 | 分值：200
+        骰子是一个立方体，每个面一个数字，初始为左1，右2，前3（观察者方向），后4，上5，下6，用123456表示这个状态。放置在平面上，
+        可以向左翻转（用L表示向左翻转1次），
+        可以向右翻转（用R表示向右翻转1次），
+        可以向前翻转（用F表示向前翻转1次），
+        可以向后翻转（用B表示向后翻转一次），
+        可以逆时针旋转（用A表示逆时针旋转90度），
+        可以逆时针旋转（用C表示顺时针旋转90度），
+        现从123456这个初始状态开始，根据输入的动作序列，计算得到最终的状态
+
+        示例1
+        输入:LR
+        输出:123456
+
+        示例2
+        输入:FCR
+        输出:342156
+
+        L: 左翻 (左右互换；上下，左右互换)
+            {
+            {5,6},
+            {3,4},
+            {2,1}
+            }
+        R: 右翻（上下互换；上下，左右互换）
+            {
+            {6,5},
+            {3,4},
+            {1,2}
+            }
+        F: 前翻（前后互换；前后，上下互换）
+            {
+            {1,2},
+            {5,6}
+            {4,3}
+            }
+        B: 后翻 （上下互换；前后，上下互换）
+            {
+            {1,2},
+            {6,5},
+            {3,4}
+            }
+        A: 逆时针旋转90（前后互换；左右，前后互换）
+            {
+            {4,3},
+            {1,2},
+            {5,6}
+            }
+        C: 顺时针旋转90 （左右互换；左右，前后互换）
+            {
+            {3,4},
+            {2,1},
+            {5,6}
+            }
+            */
+        function rollDice(str) {  
+            let sz = [[1, 2], [3, 4], [5, 6]];// 左右// 前后// 上下
+            for (c of str.split('')) {
+                if (c == 'L' || c == 'R') {
+                    if (c == 'L') {
+                        let x = sz[0][0], y = sz[0][1];
+                        sz[0][0] = y; sz[0][1] = x;
+                    } else if (c == 'R') {
+                        let x = sz[2][0], y = sz[2][1];
+                        sz[2][0] = y; sz[2][1] = x;
+                    }let p = sz[2]; sz[2] = sz[0]; sz[0] = p;
+                }
+                if (c == 'B' || c == 'F') {
+                    if (c == 'F') {
+                        let x = sz[1][0], y = sz[1][1];
+                        sz[1][0] = y; sz[1][1] = x;
+                    } else if (c == 'B') {
+                        let x = sz[2][0], y = sz[2][1];
+                        sz[2][0] = y; sz[2][1] = x;
+                    } let p = sz[1]; sz[1] = sz[2]; sz[2] = p;
+                }
+                if (c == 'A' || c == 'C') {
+                    if (c == 'A') {
+                        let x = sz[1][0], y = sz[1][1];
+                        sz[1][0] = y; sz[1][1] = x;
+                    } else if (c == 'C') {
+                        let x = sz[0][0], y = sz[0][1];
+                        sz[0][0] = y; sz[0][1] = x;
+                    }let p = sz[0]; sz[0] = sz[1]; sz[1] = p;
+                }
+            }
+            let m = sz.length, n = sz[0].length,sb = [];
+            for (let i = 0; i < m; i++) {
+                for (let j = 0; j < n; j++) {
+                    sb.push(sz[i][j]);
+                }
+            }
+            console.log(sb.join(''));
+        }
+        // rollDice('FCR');
+
+        //正则表达式转换方程
+        /*
+        规则1:如果字符遇到字符时，相同则为true,反之则false
+        规则2:字符遇到“*”号时，先看当前格退2列是否为true,如果为true则true，反则等于当前格的行减1的值；
+        规则2:字符遇到“.”号时,先看当前格减1列减行的值；
+        const p = pattern.charAt(col - 1);
+        const prev = pattern.charAt(col - 2);
+        if (p === '.' || p === t) {
+            table[row][col] = table[row - 1][col - 1];
+        } else if (p === '*') {
+            if (table[row][col - 2] === true) {
+                table[row][col] = true
+            } else if (prev === '.' || prev === t) {
+                table[row][col] = table[row - 1][col];
+            }
+        } else {
+            table[row][col] = false;
+        }
+        */
+
+        //判断是否是子序列转换方程
+        /*
+        规则1:字母相同取当前格左上角的值
+        if (ch1 === ch2 && table[row - 1][col - 1]) {
+            table[row][col] = true;
+        } else {
+            table[row][col] = table[row][col - 1];
+        }
+        规则2: 如果当前格左边值为true，则为true,反之，字母相同取当前格左上角的值
+        if (table[row][col - 1]) {
+            table[row][col] = true;
+        } else if (ch1 === ch2 && table[row - 1][col - 1]) {
+            table[row][col] = true;
+        } else {
+            table[row][col] = false;
+        }
+        * /
+        //0/1背包问题转换方程
+        /*
+        if (itemWeight > currentWeight) { 
+            当前列重量大于行重量时，取当前行方格上一行方格的价值
+            table[row][col] = table[row - 1][col];
+        } else {
+            否则取（当前行方格上一行方格，取【当前列重量 - 当前重量]的列的值 + 当前行价值），
+            再与取当前行方格上一行方格的价值比较取较大值；
+            table[row][col] = Math.max(
+                table[row - 1][col],
+                table[row - 1][currentWeight - itemWeight] + itemValue
+            );
+        }
+        */
+       
+        /*最长公共子序列转换方程
+        if (a === b) {值/字符相同，取斜上角值+1
+            table[row][col] = table[row - 1][col - 1] + 1;
+        } else {值/字符不相同，取上方值与左方值之间的最大值
+            table[row][col] = Math.max(
+                table[row][col - 1], 
+                table[row - 1][col]
+            );
+        }
+        */
+
+        /*最长公共子符串转换方程
+        规则1:值/字符相同，取斜上角值 + 1
+        规则2:值/字符相同，取值为0
+        if (a === b) { 
+            table[row][col] = table[row - 1][col - 1] + 1;
+        } else {
+            table[row][col] = 0;
+        }
+        */
+
+        /* 编辑距离转换方程
+        规则1:值/字符相同，取斜上角值
+        规则2:值/字符不相同，取斜上角值、上方值与左方值之间的最小值 + 1
+        if (char1 === char2) {
+            table[row][col] = table[row - 1][col - 1];
+        } else {
+            const min = Math.min(
+                table[row - 1][col - 1],
+                table[row - 1][col],
+                table[row][col - 1]
+            );
+            table[row][col] = min + 1;
+        }
+        */
+
+        /*分词/单词拆分 动态规划转换方程
+        先取子字符串判断是否在字典中，存在则为true,
+        反之，则遍历判断子字符串位置[start][i]与[i + 1][end]，同时为true则true
+        const sub = s.substring(start, end + 1);
+        if (wordDictSet.has(sub)) {
+            table[start][end] = true;
+            continue;
+        }
+        for (let i = start; i < end; i++) {
+            if (table[start][i] && table[i + 1][end]) {
+                table[start][end] = true;
+                break;
+            }
+        }
+        */
+
+        /*木头切割问题
+        if (rodLength > currentLength) {
+            table[row][col] = table[row - 1][col];
+        } else {
+            table[row][col] = Math.max(
+                table[row - 1][col], 
+                table[row][currentLength - rodLength] + rodPrice
+            );
+        }*/
+       
+
+        /*接雨水:双指针转换方程*/
+        function trap(height) {
+            if (height.length < 3) return 0;
+            let leftMax = height[0];
+            let rightMax = height[height.length - 1];
+            let [i, j, sum] = [1, height.length - 2, 0];
+            while (i <= j) {
+                leftMax = Math.max(leftMax, height[i]);
+                rightMax = Math.max(rightMax, height[j]);
+                let min = Math.min(leftMax, rightMax);
+                if (leftMax < rightMax) {
+                    sum += min > height[i] ? min - height[i] : 0;
+                    i++;
+                } else {
+                    sum += min > height[j] ? min - height[j] : 0;
+                    j--;
+                }
+            }
+            return sum;
+        }
+    </script>
+</body>
+</html>
